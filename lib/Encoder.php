@@ -8,11 +8,11 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslation;
 
-use eZ\Publish\API\Repository\ContentTypeService;
-use eZ\Publish\API\Repository\Values\Content\Content;
-use eZ\Publish\API\Repository\Values\Content\Field;
-use eZ\Publish\Core\FieldType\Value;
-use eZ\Publish\SPI\FieldType\Value as SPIValue;
+use Ibexa\Contracts\Core\Repository\ContentTypeService;
+use Ibexa\Contracts\Core\Repository\Values\Content\Content;
+use Ibexa\Contracts\Core\Repository\Values\Content\Field;
+use Ibexa\Core\FieldType\Value;
+use Ibexa\Contracts\Core\FieldType\Value as SPIValue;
 use EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\FieldEncoderManager;
 use EzSystems\EzPlatformAutomatedTranslation\Exception\EmptyTranslatedFieldException;
 use EzSystems\EzPlatformAutomatedTranslationBundle\Event\FieldDecodeEvent;

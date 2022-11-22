@@ -17,7 +17,7 @@ services:
     EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\PageBuilderFieldEncoder:
         arguments:
             $blockAttributeEncoderManager: '@EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\BlockAttributeEncoderManager'
-            $blockDefinitionFactory: '@EzSystems\EzPlatformPageFieldType\FieldType\Page\Block\Definition\BlockDefinitionFactory'
+            $blockDefinitionFactory: '@Ibexa\FieldTypePage\FieldType\Page\Block\Definition\BlockDefinitionFactory'
 
     EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\RichTextFieldEncoder:
         arguments:
@@ -43,7 +43,7 @@ services:
     # RichText encoder
     EzSystems\EzPlatformAutomatedTranslation\Encoder\RichText\RichTextEncoder:
         arguments:
-            $configResolver: '@ezpublish.config.resolver'
+            $configResolver: '@ibexa.config.resolver'
 
     EzSystems\EzPlatformAutomatedTranslation\Encoder: ~
 
@@ -64,16 +64,16 @@ services:
 
     EzSystems\EzPlatformAutomatedTranslationBundle\Form\Extension\TranslationAddType:
         tags:
-            - { name: form.type_extension, extended_type: EzSystems\EzPlatformAdminUi\Form\Type\Content\Translation\TranslationAddType }
+            - { name: form.type_extension, extended_type: Ibexa\AdminUi\Form\Type\Content\Translation\TranslationAddType }
 
     EzSystems\EzPlatformAutomatedTranslationBundle\Form\Extension\ContentEditType:
         tags:
-            - { name: form.type_extension, extended_type: EzSystems\EzPlatformContentForms\Form\Type\Content\ContentEditType }
+            - { name: form.type_extension, extended_type: Ibexa\ContentForms\Form\Type\Content\ContentEditType }
 
     EzSystems\EzPlatformAutomatedTranslationBundle\Form\Extension\LanguageCreateType:
         bind:
-            $localeList: '%ezpublish.locale.conversion_map%'
+            $localeList: '%ibexa.locale.conversion_map%'
         tags:
-            - { name: form.type_extension, extended_type: EzSystems\EzPlatformAdminUi\Form\Type\Language\LanguageCreateType }
+            - { name: form.type_extension, extended_type: Ibexa\AdminUi\Form\Type\Language\LanguageCreateType }
 
     EzSystems\EzPlatformAutomatedTranslationBundle\EventListener\ContentProxyTranslateListener: ~

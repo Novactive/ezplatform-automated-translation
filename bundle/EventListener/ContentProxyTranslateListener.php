@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslationBundle\EventListener;
 
-use eZ\Publish\API\Repository\ContentService;
-use EzSystems\EzPlatformAdminUi\Event\ContentProxyTranslateEvent;
+use Ibexa\Contracts\Core\Repository\ContentService;
+use Ibexa\Contracts\AdminUi\Event\ContentProxyTranslateEvent;
 use EzSystems\EzPlatformAutomatedTranslation\Translator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,7 +24,7 @@ class ContentProxyTranslateListener implements EventSubscriberInterface
     /** @var \EzSystems\EzPlatformAutomatedTranslation\Translator */
     private $translator;
 
-    /** @var \eZ\Publish\API\Repository\ContentService */
+    /** @var \Ibexa\Contracts\Core\Repository\ContentService */
     private $contentService;
 
     /** @var \Symfony\Component\Routing\RouterInterface */
@@ -79,7 +79,7 @@ class ContentProxyTranslateListener implements EventSubscriberInterface
         );
 
         $response = new RedirectResponse(
-            $this->router->generate('ezplatform.content.draft.edit', [
+            $this->router->generate('ibexa.content.draft.edit', [
                 'contentId' => $contentDraft->id,
                 'versionNo' => $contentDraft->getVersionInfo()->versionNo,
                 'language' => $toLanguageCode,

@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslationBundle\Form\Extension;
 
-use eZ\Publish\Core\MVC\Symfony\Locale\LocaleConverterInterface;
-use EzSystems\EzPlatformAdminUi\Form\Type\Content\Translation\TranslationAddType as BaseTranslationAddType;
+use Ibexa\Core\MVC\Symfony\Locale\LocaleConverterInterface;
+use Ibexa\AdminUi\Form\Type\Content\Translation\TranslationAddType as BaseTranslationAddType;
 use EzSystems\EzPlatformAutomatedTranslation\Client\ClientInterface;
 use EzSystems\EzPlatformAutomatedTranslation\ClientProvider;
 use EzSystems\EzPlatformAutomatedTranslationBundle\Form\TranslationAddDataTransformer;

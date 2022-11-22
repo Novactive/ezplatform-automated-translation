@@ -8,9 +8,9 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslation\Encoder\Field;
 
-use eZ\Publish\API\Repository\Values\Content\Field;
-use eZ\Publish\Core\FieldType\TextLine\Value as TextLineValue;
-use eZ\Publish\Core\FieldType\Value;
+use Ibexa\Contracts\Core\Repository\Values\Content\Field;
+use Ibexa\Core\FieldType\TextLine\Value as TextLineValue;
+use Ibexa\Core\FieldType\Value;
 use EzSystems\EzPlatformAutomatedTranslation\Exception\EmptyTranslatedFieldException;
 
 final class TextLineFieldEncoder implements FieldEncoderInterface

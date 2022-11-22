@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslation\Encoder\RichText;
 
-use eZ\Publish\Core\MVC\ConfigResolverInterface;
+use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
 
 final class RichTextEncoder
 {
