@@ -14,6 +14,8 @@ services:
     # field encoder
     EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\TextLineFieldEncoder: ~
 
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\TextBlockFieldEncoder: ~
+
     EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\PageBuilderFieldEncoder:
         arguments:
             $blockAttributeEncoderManager: '@EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\BlockAttributeEncoderManager'
@@ -30,6 +32,8 @@ services:
 
     # block attribute
     EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\TextBlockAttributeEncoder: ~
+
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\TextLineAttributeEncoder: ~
 
     EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\RichTextBlockAttributeEncoder:
         arguments:
