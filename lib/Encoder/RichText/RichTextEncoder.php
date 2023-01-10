@@ -70,7 +70,7 @@ final class RichTextEncoder
             'ez_platform_automated_translation'
         );
 
-        $this->nonTranslatableTags = ['ezvalue', 'ezconfig', 'ezembed'] + $tags;
+        $this->nonTranslatableTags = ['ezembed'] + $tags;
         $this->nonTranslatableSelfClosingTags = ['ezembedinline'] + $selfClosedTags;
         $this->nonTranslatableCharactersHashMap = [
                 "\n" => '<XEOL />',
