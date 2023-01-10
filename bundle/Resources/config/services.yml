@@ -16,6 +16,8 @@ services:
 
     EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\TextBlockFieldEncoder: ~
 
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\MetasFieldEncoder: ~
+
     EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\PageBuilderFieldEncoder:
         arguments:
             $blockAttributeEncoderManager: '@EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\BlockAttributeEncoderManager'
