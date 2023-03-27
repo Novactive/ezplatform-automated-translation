@@ -106,17 +106,19 @@ final class PageBuilderFieldEncoder implements FieldEncoderInterface
         $page = clone $previousFieldValue->getPage();
         $decodeArray = $encoder->decode($data, XmlEncoder::FORMAT);
 
-        foreach ($decodeArray as $blockId => $xmlValue) {
-            $block = $page->getBlockById((string) $blockId);
-            $block->setName($xmlValue['name']);
+        if ($decodeArray) {
+            foreach ($decodeArray as $blockId => $xmlValue) {
+                $block = $page->getBlockById((string)$blockId);
+                $block->setName($xmlValue['name']);
 
-            if (is_array($xmlValue['attributes'])) {
-                foreach ($xmlValue['attributes'] as $attributeName => $attribute) {
-                    if (null === ($attributeValue = $this->decodeBlockAttribute($attribute['@type'], $attribute['#']))) {
-                        continue;
+                if (is_array($xmlValue['attributes'])) {
+                    foreach ($xmlValue['attributes'] as $attributeName => $attribute) {
+                        if (null === ($attributeValue = $this->decodeBlockAttribute($attribute['@type'], $attribute['#']))) {
+                            continue;
+                        }
+
+                        $block->getAttribute($attributeName)->setValue($attributeValue);
                     }
-
-                    $block->getAttribute($attributeName)->setValue($attributeValue);
                 }
             }
         }
