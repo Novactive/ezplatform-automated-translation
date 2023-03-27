@@ -16,6 +16,8 @@ services:
 
     EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\TextBlockFieldEncoder: ~
 
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\UrlFieldEncoder: ~
+
     EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\MetasFieldEncoder: ~
 
     EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\PageBuilderFieldEncoder:
