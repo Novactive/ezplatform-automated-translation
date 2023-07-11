@@ -105,7 +105,7 @@ class TranslationAddType extends AbstractTypeExtension
         $fillMap = function ($key, &$map) use ($form) {
             $languages = $form->get($key);
             $choices = $languages->getConfig()->getAttribute('choice_list')->getChoices();
-            /** @var \eZ\Publish\API\Repository\Values\Content\Language $language */
+            /** @var \Ibexa\Contracts\Core\Repository\Values\Content\Language $language */
             foreach ($choices as $language) {
                 foreach ($this->clientProvider->getClients() as $client) {
                     $posix = $this->localeConverter->convertToPOSIX($language->languageCode);

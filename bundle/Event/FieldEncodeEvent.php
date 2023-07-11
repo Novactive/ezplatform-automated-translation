@@ -12,7 +12,7 @@ use Ibexa\Contracts\Core\Repository\Values\Content\Field;
 
 final class FieldEncodeEvent
 {
-    /** @var \eZ\Publish\API\Repository\Values\Content\Field */
+    /** @var \Ibexa\Contracts\Core\Repository\Values\Content\Field */
     private $field;
 
     /** @var string */
