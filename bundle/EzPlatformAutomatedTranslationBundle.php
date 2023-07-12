@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslationBundle;
 
+use EzSystems\EzPlatformAutomatedTranslationBundle\DependencyInjection\Security\Provider\AutoTranslationPolicyProvider;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -21,5 +22,7 @@ class EzPlatformAutomatedTranslationBundle extends Bundle
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
+        $ibexaExtension = $container->getExtension('ibexa');
+        $ibexaExtension->addPolicyProvider(new AutoTranslationPolicyProvider());
     }
 }

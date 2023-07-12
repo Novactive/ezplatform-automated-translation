@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslationBundle\Form\Extension;
 
+use Ibexa\Contracts\Core\Repository\Values\Content\Language;
 use Ibexa\Core\MVC\Symfony\Locale\LocaleConverterInterface;
 use Ibexa\AdminUi\Form\Type\Content\Translation\TranslationAddType as BaseTranslationAddType;
 use EzSystems\EzPlatformAutomatedTranslation\Client\ClientInterface;
@@ -105,7 +106,7 @@ class TranslationAddType extends AbstractTypeExtension
         $fillMap = function ($key, &$map) use ($form) {
             $languages = $form->get($key);
             $choices = $languages->getConfig()->getAttribute('choice_list')->getChoices();
-            /** @var \Ibexa\Contracts\Core\Repository\Values\Content\Language $language */
+            /** @var Language $language */
             foreach ($choices as $language) {
                 foreach ($this->clientProvider->getClients() as $client) {
                     $posix = $this->localeConverter->convertToPOSIX($language->languageCode);

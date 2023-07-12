@@ -1,0 +1,3 @@
+tab.translations.remote.translation.service: 'Use automatic translation'
+tab.translations.remote.translation.service.with: 'Use automatic translation (%alias%)'
+auto_translation.permission.failed: 'You don''t have the permission to acces to the Content Translation interface'
