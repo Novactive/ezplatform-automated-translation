@@ -8,3 +8,10 @@ services:
          tags:
              - { name: ibexa.admin_ui.component, group: 'script-body' }
 
+    ezautotranslate.ezadminui.component.stylesheet:
+      parent: Ibexa\AdminUi\Component\TwigComponent
+      public: false
+      arguments:
+        $template: '@@EzPlatformAutomatedTranslation/ezadminui/stylesheet.html.twig'
+      tags:
+        - { name: ibexa.admin_ui.component, group: 'stylesheet-body' }

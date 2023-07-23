@@ -11,6 +11,10 @@ services:
             - '../../../bundle/Entity/'
             - '../../../bundle/IbexaAutomatedTranslationBundle.php'
 
+    EzSystems\EzPlatformAutomatedTranslationBundle\Form\Type\SubtreeLocationType:
+        tags:
+            - { name: form.type, alias: field.subtree_location }
+
     _instanceof:
         EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\FieldEncoderInterface:
             tags: [ 'ezplatform.automated_translation.field_encoder' ]
@@ -87,3 +91,9 @@ services:
         tags:
             - { name: form.type_extension, extended_type: Ibexa\AdminUi\Form\Type\Language\LanguageCreateType }
 
+
+    EzSystems\EzPlatformAutomatedTranslationBundle\Handler\AutoTranslationActionsHandler:
+        lazy: true
+        arguments:
+            $connection: '@ibexa.persistence.connection'
+            $criteriaConverter: '@ibexa.search.legacy.gateway.criteria_converter.location'

@@ -1,0 +1,6 @@
+{% form_theme form '@ibexadesign/Form/auto_translation/search_form_fields.html.twig' %}
+
+{{ form_start(form_search, { attr: {class: 'auto-translation-search-form'}}) }}
+    {{ form_errors(form_search) }}
+    {{ form_widget(form_search) }}
+{{ form_end(form_search) }}

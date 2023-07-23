@@ -1,0 +1,7 @@
+system:
+    default:
+        universal_discovery_widget_module:
+            configuration:
+                auto_translation:
+                    multiple: false
+                    allowed_content_types: []

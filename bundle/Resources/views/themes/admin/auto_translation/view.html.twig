@@ -1,0 +1,124 @@
+{% extends '@ibexadesign/ui/layout.html.twig' %}
+
+{% block content %}
+    {% if form_search.vars.data.sort is defined %}
+        {% set current_field = form_search.vars.data.sort['field'] %}
+        {% set current_direction = form_search.vars.data.sort['direction'] %}
+    {% else %}
+        {% set current_field = '' %}
+        {% set current_direction = '' %}
+    {% endif %}
+
+    {% set sort_directions = {
+        'user_name' : current_field == 'user_name' and current_direction == 0 ? 'DESC' : 'ASC',
+        'content_name' : current_field == 'content_name' and current_direction == 0 ? 'DESC' : 'ASC',
+        'target_language' : current_field == 'target_language' and current_direction == 0 ? 'DESC' : 'ASC',
+        'created_at' : current_field == 'created_at' and current_direction == 0 ? 'DESC' : 'ASC',
+        'overwrite' : current_field == 'overwrite' and current_direction == 0 ? 'DESC' : 'ASC',
+        'status' : current_field == 'status' and current_direction == 0 ? 'DESC' : 'ASC'
+    } %}
+    <section class="ibexa-container">
+        <div class="ibexa-header-wrapper">
+            <div class="ibexa-page-title">
+                <h1>{{ 'auto_translation.title'|trans() }}</h1>
+            </div>
+        </div>
+        {% if canCreate is defined and canCreate %}
+            {% if form.vars.attr['__template'] is defined %}
+                {% include form.vars.attr['__template'] %}
+            {% else %}
+                {{ form_start(form, { attr: {class: 'ibexa-form'}}) }}
+                    {{ form_errors(form) }}
+                    {{ form_widget(form) }}
+                {{ form_end(form) }}
+            {% endif %}
+        {% endif %}
+
+        {% if form_search.vars.attr['__template'] is defined %}
+            {% include form_search.vars.attr['__template'] %}
+        {% else %}
+            {{ form_start(form_search, { attr: {class: 'ibexa-adaptive-filters ibexa-adaptive-filters--inside-container auto-translation-search-form'}}) }}
+            {{ form_errors(form_search) }}
+            {{ form_widget(form_search) }}
+            {{ form_end(form_search) }}
+        {% endif %}
+
+
+        <div class="ibexa-table-header">
+            <div class="ibexa-table-header__headline">{{ 'auto_translation.list.title'|trans() }}</div>
+        </div>
+        <div class="ibexa-scrollable-wrapper">
+            <table class="ibexa-table table">
+                <thead>
+                <tr class="ibexa-table__head-row">
+                    <th class="ibexa-table__header-cell" >
+                        <span class="ibexa-table__header-cell-text-wrapper ibexa-table__sort-column ibexa-table__sort-column--user_name" data-field="user_name"  data-direction="{{ sort_directions.user_name }}">
+                            {{ 'auto_translation.list.user_name'|trans }}
+                        </span>
+                    </th>
+                    <th class="ibexa-table__header-cell">
+                        <span class="ibexa-table__header-cell-text-wrapper ibexa-table__sort-column ibexa-table__sort-column--content_name" data-field="content_name"  data-direction="{{ sort_directions.content_name }}">
+                            {{ 'auto_translation.list.content_name'|trans }}
+                        </span>
+                    </th>
+                    <th class="ibexa-table__header-cell">
+                        <span class="ibexa-table__header-cell-text-wrapper ibexa-table__sort-column ibexa-table__sort-column--target_language" data-field="target_language"  data-direction="{{ sort_directions.target_language }}">
+                            {{ 'auto_translation.list.target_language'|trans }}
+                        </span>
+                    </th>
+                    <th class="ibexa-table__header-cell">
+                        <span class="ibexa-table__header-cell-text-wrapper ibexa-table__sort-column ibexa-table__sort-column--overwrite" data-field="overwrite"  data-direction="{{ sort_directions.overwrite }}">
+                            {{ 'auto_translation.list.overwrite'|trans }}
+                        </span>
+                    <th class="ibexa-table__header-cell">
+                        <span class="ibexa-table__header-cell-text-wrapper ibexa-table__sort-column ibexa-table__sort-column--created_at" data-field="created_at"  data-direction="{{ sort_directions.created_at }}">
+                            {{ 'auto_translation.list.created_at'|trans }}
+                        </span>
+                    </th>
+                    <th class="ibexa-table__header-cell">
+                        <span class="ibexa-table__header-cell-text-wrapper ibexa-table__sort-column ibexa-table__sort-column--status" data-field="status"  data-direction="{{ sort_directions.status }}">
+                            {{ 'auto_translation.list.status'|trans }}
+                        </span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="ibexa-table__body">
+                    {% for item in pager.currentPageResults %}
+                        <tr  class="ibexa-table__row">
+                            <td class="ibexa-table__cell">
+                              {{ item.user_name }}
+                            </td>
+                            <td class="ibexa-table__cell">
+                                <a target="_blank" href="{{ path('ibexa.content.view', {
+                                    'contentId': item.content_id,
+                                    'locationId': item.subtree_id,
+                                }) }}">{{ item.content_name }}</a>
+                            </td>
+                            <td class="ibexa-table__cell">{{ ibexa_admin_ui_config.languages.mappings[item.target_language].name }}</td>
+                            <td class="ibexa-table__cell">{{ 'auto_translation.list.overwrite.value'|trans({'%count%': item.overwrite})|raw }}</td>
+                            <td class="ibexa-table__cell">{{ item.created_at|date("d/m/Y H:i") }}</td>
+                            <td class="ibexa-table__cell">
+                                {{ ('auto_translation.list.status.' ~ item.status)|trans }}
+                                {% if item.finished_at and item.status == 'finished' or item.status == 'failed' %}
+                                   <br> ({{ item.finished_at|date("d/m/Y H:i") }})
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if pager.haveToPaginate %}
+                <div class="ibexa-pagination mt-3">
+                    <span class="ibexa-pagination__info">
+                        {{ 'auto_translation.viewing'|trans({
+                            '%viewing%': pager.currentPageResults|length,
+                            '%total%': pager.nbResults})|desc('Viewing <strong>%viewing%</strong> out of <strong>%total%</strong> items')|raw }}
+                    </span>
+                    <div class="pagination ibexa-pagination__navigation">
+                        {{ pagerfanta(pager, 'ibexa') }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

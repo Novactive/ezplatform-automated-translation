@@ -1,0 +1,6 @@
+{% form_theme form '@ibexadesign/Form/auto_translation/form_fields.html.twig' %}
+
+{{ form_start(form, { attr: {class: 'ibexa-form ibexa-form-validate'}}) }}
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+{{ form_end(form) }}

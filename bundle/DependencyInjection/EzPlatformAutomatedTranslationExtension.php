@@ -12,11 +12,14 @@ use Ibexa\Bundle\Core\DependencyInjection\Configuration\SiteAccessAware\Configur
 use EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\BlockAttributeEncoderInterface;
 use EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\FieldEncoderInterface;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Yaml\Yaml;
 
-class EzPlatformAutomatedTranslationExtension extends Extension
+class EzPlatformAutomatedTranslationExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * {@inheritdoc}
@@ -65,5 +68,22 @@ class EzPlatformAutomatedTranslationExtension extends Extension
                 return !empty($container->resolveEnvPlaceholders($value, true));
             });
         }));
+    }
+
+    /**
+     * Allow an extension to prepend the extension configurations.
+     */
+    public function prepend(ContainerBuilder $container): void
+    {
+        $configs = [
+            'universal_discovery_widget.yaml' => 'ibexa',
+        ];
+
+        foreach ($configs as $fileName => $extensionName) {
+            $configFile = __DIR__.'/../Resources/config/'.$fileName;
+            $config = Yaml::parse(file_get_contents($configFile));
+            $container->prependExtensionConfig($extensionName, $config);
+            $container->addResource(new FileResource($configFile));
+        }
     }
 }
