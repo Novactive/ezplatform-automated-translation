@@ -1,13 +1,13 @@
 <?php
 
 /**
- * NovaeZRssFeedBundle.
+ * EzPlatformAutomatedTranslationBundle.
  *
- * @package   NovaeZRssFeedBundle
+ * @package   EzPlatformAutomatedTranslationBundle
  *
  * @author    Novactive
  * @copyright 2018 Novactive
- * @license   https://github.com/Novactive/NovaeZRssFeedBundle/blob/master/LICENSE
+ * @license   https://github.com/Novactive/ezplatform-automated-translation/blob/master/LICENSE
  */
 
 namespace EzSystems\EzPlatformAutomatedTranslationBundle\Form;
@@ -21,8 +21,6 @@ use Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException;
 use Ibexa\Contracts\Core\Repository\LanguageService;
 use Ibexa\Contracts\Core\Repository\LocationService;
 use Ibexa\Contracts\Core\Repository\Values\Content\Language;
-use Novactive\EzRssFeedBundle\Form\Transformer\MultipleChoicesTransformer;
-use Novactive\EzRssFeedBundle\Services\SiteListServiceInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -41,24 +39,19 @@ class AutoTranslationActionsType extends AbstractType
     public const TEMPLATE = '@ibexadesign/Form/auto_translation/form.html.twig';
     protected EntityManagerInterface $em;
     protected LocationService $locationService;
-    protected SiteListServiceInterface $siteListService;
-    protected MultipleChoicesTransformer $choicesTransformer;
     protected LanguageService $languageService;
     protected TranslatorInterface $translator;
+    protected TranslatableNotificationHandlerInterface $notificationHandler;
 
     public function __construct(
         EntityManagerInterface $em,
         LocationService $locationService,
-        SiteListServiceInterface $siteListService,
-        MultipleChoicesTransformer $choicesTransformer,
         LanguageService $languageService,
         TranslatorInterface $translator,
         TranslatableNotificationHandlerInterface $notificationHandler,
     ) {
         $this->em = $em;
         $this->locationService = $locationService;
-        $this->choicesTransformer = $choicesTransformer;
-        $this->siteListService = $siteListService;
         $this->languageService = $languageService;
         $this->translator = $translator;
         $this->notificationHandler = $notificationHandler;

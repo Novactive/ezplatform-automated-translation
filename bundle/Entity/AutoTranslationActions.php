@@ -1,13 +1,13 @@
 <?php
 
 /**
- * NovaeZRssFeedBundle.
+ * EzPlatformAutomatedTranslationBundle.
  *
- * @package   NovaeZRssFeedBundle
+ * @package   EzPlatformAutomatedTranslationBundle
  *
  * @author    Novactive
  * @copyright 2018 Novactive
- * @license   https://github.com/Novactive/NovaeZRssFeedBundle/blob/master/LICENSE
+ * @license   https://github.com/Novactive/ezplatform-automated-translation/blob/master/LICENSE
  */
 
 namespace EzSystems\EzPlatformAutomatedTranslationBundle\Entity;
@@ -16,7 +16,6 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * RssFeedsItems.
  *
  * @ORM\Table(name="auto_translation_actions")
  * @ORM\Entity(repositoryClass="EzSystems\EzPlatformAutomatedTranslationBundle\Repository\AutoTranslationActionsRepository")
