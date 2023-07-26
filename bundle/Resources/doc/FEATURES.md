@@ -16,3 +16,18 @@ To do so, you need to:
 - create a service that implements EzSystems\EzPlatformAutomatedTranslation\Client\ClientInterface
 - implements the method
 - tag this service: `ezplatform.automated_translation.client`  
+
+
+## Logging run command
+If you want to log outputs of commands processed by run command you have to add the monolog channel `eztranslate_cmd` to your configuration.
+
+### Example
+```yml
+    monolog:
+        channels: [...,'eztranslate_cmd']
+        handlers:
+          eztranslate_cmd:
+            type:  stream
+            path: '%kernel.logs_dir%/eztranslate_cmd.log'
+            channels: ['eztranslate_cmd']
+```

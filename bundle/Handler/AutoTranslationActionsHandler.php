@@ -9,7 +9,9 @@ declare(strict_types=1);
 namespace EzSystems\EzPlatformAutomatedTranslationBundle\Handler;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Query\QueryBuilder;
+use EzSystems\EzPlatformAutomatedTranslationBundle\Entity\AutoTranslationActions;
 use Ibexa\Contracts\Core\Repository\PermissionCriterionResolver;
 use Ibexa\Contracts\Core\Repository\Values\Content\Query;
 use Ibexa\Contracts\Core\Repository\Values\Content\Query\Criterion;
@@ -73,12 +75,11 @@ class AutoTranslationActionsHandler
         ;
         if (isset($sort['field'])) {
             $selectQuery->orderBy($sort['field'], ($sort['direction'] ?? 0) == 0 ? 'DESC' : 'ASC');
+        } else {
+            $selectQuery->orderBy('created_at', 'DESC');
         }
         // Check read access to whole source subtree
-        $permissionCriterion = $this->permissionCriterionResolver->getPermissionsCriterion(
-            'content',
-            'read'
-        );
+        $permissionCriterion = $this->permissionCriterionResolver->getPermissionsCriterion();
         if ($permissionCriterion !== true && $permissionCriterion !== false) {
             $query = new Query();
             $query->filter = new LogicalAnd(
@@ -108,13 +109,44 @@ class AutoTranslationActionsHandler
         return $selectQuery;
     }
 
+    /**
+     * @throws Exception
+     * @throws \Doctrine\DBAL\Driver\Exception
+     */
+    public function getFirstPendingAction()
+    {
+        $queryBuilder = $this->getAllQuery(['field' => 'created_at', 'direction' => 1]);
+        $queryBuilder
+            ->andWhere($queryBuilder->expr()->in('at.status', ':action_status'))
+            ->setParameter(
+                ':action_status',
+                [AutoTranslationActions::STATUS_PENDING, AutoTranslationActions::STATUS_IN_PROGRESS],
+                Connection::PARAM_STR_ARRAY
+            );
+        $queryBuilder->setMaxResults(1);
+
+        return $queryBuilder->execute()->fetchAllAssociative()[0] ?? null;
+    }
+
     public function countAll(QueryBuilder $queryBuilder): int
     {
         $queryBuilder->select('COUNT(at.id)');
         $queryBuilder->orderBy('at.id');
-        $queryBuilder->limit = 0;
+        $queryBuilder->setMaxResults(1);
 
         return (int) $queryBuilder->execute()->fetchOne();
+    }
+
+    public function buildQueryForContentInSubtree(string $locationPath): QueryBuilder
+    {
+        return $this->connection->createQueryBuilder()
+            ->select('DISTINCT c.id')
+            ->from(ContentGateway::CONTENT_ITEM_TABLE, 'c')
+            ->innerJoin('c', LocationGateway::CONTENT_TREE_TABLE, 't', 't.contentobject_id = c.id')
+            ->where('c.status = :status')
+            ->andWhere('t.path_string LIKE :path')
+            ->setParameter('status', ContentInfo::STATUS_PUBLISHED, ParameterType::INTEGER)
+            ->setParameter('path', $locationPath . '%', ParameterType::STRING);
     }
 }
 

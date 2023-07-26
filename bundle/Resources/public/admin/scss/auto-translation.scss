@@ -28,3 +28,28 @@
     flex-direction: row-reverse;
 }
 
+.ibexa-popup--auto-translation .modal-body {
+    overflow-y: scroll;
+    height: auto;
+    max-height: 600px;
+}
+
+.ibexa-auto-translation-actions-table {
+    .ibexa-badge--secondary {
+        color: #FFF;
+    }
+    .status-pending {
+        background-color: #f15a10;
+    }
+    .status-in_progress {
+        background-color: #5a10f1;
+    }
+    .status-failed {
+        background-color: #db0032;
+    }
+    .status-finished {
+        background-color: #00621a;
+    }
+}
+
+

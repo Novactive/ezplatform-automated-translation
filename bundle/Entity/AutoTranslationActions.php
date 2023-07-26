@@ -85,6 +85,13 @@ class AutoTranslationActions
      */
     private $finishedAt;
 
+    /**
+     * @var String
+     *
+     * @ORM\Column(name="log_message", type="text", nullable=true)
+     */
+    private $logMessage;
+
     public function getId(): int
     {
         return $this->id;
@@ -170,6 +177,22 @@ class AutoTranslationActions
     public function setFinishedAt(?DateTime $finishedAt = null): void
     {
         $this->finishedAt = $finishedAt;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLogMessage(): ?string
+    {
+        return $this->logMessage;
+    }
+
+    /**
+     * @param string|null $logMessage
+     */
+    public function setLogMessage(?string $logMessage): void
+    {
+        $this->logMessage = $logMessage;
     }
 
     /**

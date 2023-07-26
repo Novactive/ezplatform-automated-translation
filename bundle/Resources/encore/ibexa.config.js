@@ -8,6 +8,7 @@ module.exports = (Encore) => {
         path.resolve(__dirname, '../public/admin/js/validator/auto-translation-ezobjectrelationlist.js'),
         path.resolve(__dirname, '../public/admin/js/ezplatformautomatedtranslation.js'),
         path.resolve(__dirname, '../public/admin/js/auto-translation.js'),
+        path.resolve(__dirname, '../public/admin/js/show.history.js'),
     ]);
     Encore.addEntry('ezplatform-automated-translation-css', [
         path.resolve(__dirname, '../public/admin/scss/auto-translation.scss'),

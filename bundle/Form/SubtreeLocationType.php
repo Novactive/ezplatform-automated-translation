@@ -10,7 +10,7 @@
  * @license   https://github.com/Novactive/ezplatform-automated-translation/blob/master/LICENSE
  */
 
-namespace EzSystems\EzPlatformAutomatedTranslationBundle\Form\Type;
+namespace EzSystems\EzPlatformAutomatedTranslationBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;

@@ -30,8 +30,8 @@ class AutoTranslationActionsSearchType extends AbstractType
                 'row_attr' => [
                     'hidden' => 'hidden'
                 ],
-                'sort_fields' => ['user_name', 'content_name', 'target_language', 'created_at' ,'overwrite' ,'status'],
-                'default' => ['field' => 'created_at', 'direction' => '1'],
+                'sort_fields' => ['created_at', 'user_name', 'content_name', 'target_language' ,'overwrite' ,'status'],
+                'default' => ['field' => 'created_at', 'direction' => '0'],
             ])
         ;
     }

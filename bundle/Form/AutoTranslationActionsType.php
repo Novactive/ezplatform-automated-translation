@@ -6,7 +6,7 @@
  * @package   EzPlatformAutomatedTranslationBundle
  *
  * @author    Novactive
- * @copyright 2018 Novactive
+ * @copyright 2023 Novactive
  * @license   https://github.com/Novactive/ezplatform-automated-translation/blob/master/LICENSE
  */
 
@@ -14,7 +14,6 @@ namespace EzSystems\EzPlatformAutomatedTranslationBundle\Form;
 
 use Doctrine\ORM\EntityManagerInterface;
 use EzSystems\EzPlatformAutomatedTranslationBundle\Entity\AutoTranslationActions;
-use EzSystems\EzPlatformAutomatedTranslationBundle\Form\Type\SubtreeLocationType;
 use Ibexa\Contracts\AdminUi\Notification\TranslatableNotificationHandlerInterface;
 use Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException;
 use Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException;

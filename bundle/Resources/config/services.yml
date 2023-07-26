@@ -22,6 +22,10 @@ services:
         EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\BlockAttributeEncoderInterface:
             tags: [ 'ezplatform.automated_translation.block_attribute_encoder' ]
 
+        Symfony\Component\Console\Command\Command:
+            tags:
+                - { name: console.command }
+                - { name: monolog.logger, channel: translate_content_cmd }
     # field encoder
     EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\TextLineFieldEncoder: ~
 
