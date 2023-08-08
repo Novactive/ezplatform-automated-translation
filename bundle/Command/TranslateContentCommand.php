@@ -38,6 +38,7 @@ use RuntimeException;
 use Ibexa\Core\Base\Exceptions\InvalidArgumentException;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Process\Process;
+use Pagerfanta\Adapter\CallbackAdapter;
 
 final class TranslateContentCommand extends Command
 {
@@ -153,16 +154,18 @@ final class TranslateContentCommand extends Command
                     $output->writeln($message);
                     $logMessage .= $message .'</br>';
 
-                    $query = $this->handler->buildQueryForContentInSubtree($subtreeLocation->pathString);
-                    $countQueryBuilderModifier = static function ($queryBuilder) {
-                        $queryBuilder->select('COUNT(DISTINCT c.id) AS total_results')
-                            ->setMaxResults(1);
-                    };
-
+                    $adapter = new CallbackAdapter(
+                        function () use ($subtreeLocation): int {
+                            return $this->handler->countContentWithRelationsInSubtree($subtreeLocation->pathString);
+                        },
+                        function (int $offset, int $limit) use ($subtreeLocation): iterable {
+                            return $this->handler->getContentsWithRelationsInSubtree($subtreeLocation->pathString, $offset, $limit);
+                        }
+                    );
                     $currentPage = 1;
                     $maxPerPage = 1;
                     $pager = new Pagerfanta(
-                        new QueryAdapter($query, $countQueryBuilderModifier)
+                        $adapter
                     );
                     $pager->setMaxPerPage($maxPerPage);
                     $pager->setCurrentPage($currentPage);
@@ -177,15 +180,23 @@ final class TranslateContentCommand extends Command
                     if ($pager->count() > 0) {
                         do {
                             $i++;
+                            $adapter = new CallbackAdapter(
+                                function () use ($subtreeLocation): int {
+                                    return $this->handler->countContentWithRelationsInSubtree($subtreeLocation->pathString);
+                                },
+                                function (int $offset, int $limit) use ($subtreeLocation): iterable {
+                                    return $this->handler->getContentsWithRelationsInSubtree($subtreeLocation->pathString, $offset, $limit);
+                                }
+                            );
                             $pager = new Pagerfanta(
-                                new QueryAdapter($query, $countQueryBuilderModifier)
+                                $adapter
                             );
                             $pager->setMaxPerPage($maxPerPage);
                             $pager->setCurrentPage($currentPage);
                             $contentIds = [];
                             /** @var Content $content */
                             foreach ($pager->getCurrentPageResults() as $result) {
-                                $contentIds[] = $result['id'];
+                                $contentIds[] = $result['contentId'];
                             }
                             $processes = $this->getPhpProcess(
                                 $contentIds[0],

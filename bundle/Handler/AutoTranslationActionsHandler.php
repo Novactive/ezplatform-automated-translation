@@ -137,16 +137,47 @@ class AutoTranslationActionsHandler
         return (int) $queryBuilder->execute()->fetchOne();
     }
 
-    public function buildQueryForContentInSubtree(string $locationPath): QueryBuilder
+    public function getContentsWithRelationsInSubtree(string $locationPath, int $offset = 0 , int $limit = 10): array
     {
-        return $this->connection->createQueryBuilder()
-            ->select('DISTINCT c.id')
+        $sql = $this->getSqlContentsWithRelationsInSubtree();
+        $query = $this->connection->prepare(
+            "SELECT * FROM ($sql) x LIMIT $offset,$limit");
+        $query->bindValue( ':status', ContentInfo::STATUS_PUBLISHED, ParameterType::INTEGER);
+        $query->bindValue(':path', $locationPath . '%', ParameterType::STRING);
+        $result = $query->executeQuery();
+
+        return $result->fetchAllAssociative();
+    }
+    public function countContentWithRelationsInSubtree(string $locationPath): int
+    {
+        $sql = $this->getSqlContentsWithRelationsInSubtree();
+        $query = $this->connection->prepare(
+            "SELECT COUNT(*) FROM ($sql) x");
+        $query->bindValue( ':status', ContentInfo::STATUS_PUBLISHED, ParameterType::INTEGER);
+        $query->bindValue(':path', $locationPath . '%', ParameterType::STRING);
+        $result = $query->executeQuery();
+
+        return $result->fetchOne();
+    }
+    public function getSqlContentsWithRelationsInSubtree(): string
+    {
+        $query =  $this->connection->createQueryBuilder()
             ->from(ContentGateway::CONTENT_ITEM_TABLE, 'c')
             ->innerJoin('c', LocationGateway::CONTENT_TREE_TABLE, 't', 't.contentobject_id = c.id')
             ->where('c.status = :status')
-            ->andWhere('t.path_string LIKE :path')
-            ->setParameter('status', ContentInfo::STATUS_PUBLISHED, ParameterType::INTEGER)
-            ->setParameter('path', $locationPath . '%', ParameterType::STRING);
+            ->andWhere('t.path_string LIKE :path');
+
+        $contentsSqlQuery = $query
+            ->select('DISTINCT c.id as contentId')
+            ->getSQL();
+
+        $relationContentsSqlQuery = $query
+            ->select('DISTINCT c_rel.to_contentobject_id as contentId')
+            ->innerJoin('c', ContentGateway::CONTENT_RELATION_TABLE, 'c_rel', 'c_rel.from_contentobject_id = c.id AND c_rel.from_contentobject_version = c.current_version')
+            ->getSQL();
+
+        return "$contentsSqlQuery UNION ALL $relationContentsSqlQuery";
     }
+
 }
 
