@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslation\Encoder\Field;
 
+use EzSystems\EzPlatformAutomatedTranslation\Encoder;
 use Ibexa\Contracts\Core\Repository\Values\Content\Field;
 use Ibexa\Core\FieldType\TextLine\Value as TextLineValue;
 use Ibexa\Core\FieldType\Value;
@@ -27,12 +28,17 @@ final class TextLineFieldEncoder implements FieldEncoderInterface
 
     public function encode(Field $field): string
     {
-        return (string) $field->value;
+        return htmlentities((string) $field->value);
     }
 
     public function decode(string $value, $previousFieldValue): Value
     {
-        $value = trim($value);
+        $value = str_replace(
+            Encoder::XML_MARKUP,
+            '',
+            $value
+        );
+        $value = htmlspecialchars_decode(trim($value));
 
         if (strlen($value) === 0) {
             throw new EmptyTranslatedFieldException();
