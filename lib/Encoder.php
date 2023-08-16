@@ -71,7 +71,7 @@ class Encoder
      */
     private const CDATA_FAKER_TAG = 'fakecdata';
 
-    private const XML_MARKUP = '<?xml version="1.0" encoding="UTF-8"?>';
+    public const XML_MARKUP = '<?xml version="1.0" encoding="UTF-8"?>';
 
     /** @var ContentTypeService */
     private $contentTypeService;

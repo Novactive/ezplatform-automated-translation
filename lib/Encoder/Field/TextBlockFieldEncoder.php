@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslation\Encoder\Field;
 
+use EzSystems\EzPlatformAutomatedTranslation\Encoder;
 use Ibexa\Contracts\Core\Repository\Values\Content\Field;
 use Ibexa\Core\FieldType\TextBlock\Value as TextBlockValue;
 use Ibexa\Core\FieldType\Value;
@@ -32,7 +33,12 @@ final class TextBlockFieldEncoder implements FieldEncoderInterface
 
     public function decode(string $value, $previousFieldValue): Value
     {
-        $value = trim($value);
+        $value = str_replace(
+            Encoder::XML_MARKUP,
+            '',
+            $value
+        );
+        $value = htmlspecialchars_decode(trim($value));
 
         if (strlen($value) === 0) {
             throw new EmptyTranslatedFieldException();
