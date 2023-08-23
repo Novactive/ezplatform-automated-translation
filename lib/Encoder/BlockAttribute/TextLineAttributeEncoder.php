@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute;
 
+use EzSystems\EzPlatformAutomatedTranslation\Encoder;
+
 class TextLineAttributeEncoder implements BlockAttributeEncoderInterface
 {
     private const TYPE = 'string';
@@ -24,11 +26,17 @@ class TextLineAttributeEncoder implements BlockAttributeEncoderInterface
 
     public function encode($value): string
     {
-        return (string) $value;
+        return htmlentities((string) $value);
     }
 
     public function decode(string $value): string
     {
-        return $value;
+        $value = str_replace(
+            Encoder::XML_MARKUP,
+            '',
+            $value
+        );
+
+        return htmlspecialchars_decode(trim($value));
     }
 }
