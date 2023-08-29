@@ -5,9 +5,11 @@ namespace EzSystems\EzPlatformAutomatedTranslation\Encoder\Field;
 use eZ\Publish\API\Repository\Values\Content\Field;
 use eZ\Publish\Core\FieldType\Value;
 use Novactive\Bundle\eZSEOBundle\Core\FieldType\Metas\Value as MetasValue;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 class MetasFieldEncoder implements FieldEncoderInterface
 {
+    private const CDATA_FAKER_TAG = 'fake_metas_cdata';
 
     public function canEncode(Field $field): bool
     {
@@ -24,10 +26,21 @@ class MetasFieldEncoder implements FieldEncoderInterface
         /** @var MetasValue $value */
         $value = $field->value;
         $encodeValue = [];
-        foreach ($value->metas as $meta) {
-            $encodeValue[] = $meta->getContent();
+        foreach ($value->metas as $name => $meta) {
+            $encodeValue[str_replace(':', '_',$name)] = $meta->getContent();
         }
-        return implode('/', $encodeValue);
+        $encoder = new XmlEncoder();
+        $payload = $encoder->encode($encodeValue, XmlEncoder::FORMAT);
+
+        $payload = str_replace('<?xml version="1.0"?>' . "\n", '', $payload);
+
+        $payload = str_replace(
+            ['<![CDATA[', ']]>'],
+            ['<' . self::CDATA_FAKER_TAG . '>', '</' . self::CDATA_FAKER_TAG . '>'],
+            $payload
+        );
+
+        return (string) $payload;
     }
 
     /**
@@ -38,15 +51,19 @@ class MetasFieldEncoder implements FieldEncoderInterface
      */
     public function decode(string $value, $previousFieldValue): Value
     {
-        $decodeValue = explode('/', $value);
-        $value = [];
+        $data = str_replace(
+            ['<' . self::CDATA_FAKER_TAG . '>', '</' . self::CDATA_FAKER_TAG . '>'],
+            ['<![CDATA[', ']]>'],
+            $value
+        );
 
-        $i = 0;
-        foreach ($previousFieldValue->metas as $name=>$meta) {
-            $value[$name] = $meta->setContent($decodeValue[$i]);
-            $i++;
+        $encoder = new XmlEncoder();
+        $decodeArray = $encoder->decode($data, XmlEncoder::FORMAT);
+        $decodeValues = [];
+        foreach ($previousFieldValue->metas as $name => $meta) {
+            $decodeValues[$name] = $meta->setContent($decodeArray[str_replace(':', '_',$name)]);
         }
 
-        return new MetasValue($value);
+        return new MetasValue($decodeValues);
     }
 }
