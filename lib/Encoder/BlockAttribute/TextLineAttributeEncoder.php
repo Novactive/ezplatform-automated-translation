@@ -37,6 +37,6 @@ class TextLineAttributeEncoder implements BlockAttributeEncoderInterface
             $value
         );
 
-        return htmlspecialchars_decode(trim($value));
+        return html_entity_decode(htmlspecialchars_decode(trim($value)));
     }
 }
