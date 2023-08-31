@@ -30,8 +30,6 @@ class EzPlatformAutomatedTranslationExtension extends Extension implements Prepe
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        // always needed because of Bundle extension.
-        $loader->load('services_override.yml');
 
         $container->registerForAutoconfiguration(FieldEncoderInterface::class)
             ->addTag('ezplatform.automated_translation.field_encoder');
@@ -50,6 +48,8 @@ class EzPlatformAutomatedTranslationExtension extends Extension implements Prepe
         $loader->load('ezadminui.yml');
         $loader->load('default_settings.yml');
         $loader->load('services.yml');
+        // always needed because of Bundle extension.
+        $loader->load('services_override.yml');
 
         $processor = new ConfigurationProcessor($container, $this->getAlias());
         $processor->mapSetting('configurations', $config);
