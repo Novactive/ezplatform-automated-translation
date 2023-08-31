@@ -26,6 +26,8 @@ services:
             tags:
                 - { name: console.command }
                 - { name: monolog.logger, channel: translate_content_cmd }
+
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\ImageFieldEncoder: ~
     # field encoder
     EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\TextLineFieldEncoder: ~
 
