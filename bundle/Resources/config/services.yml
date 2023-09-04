@@ -22,10 +22,15 @@ services:
         EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\BlockAttributeEncoderInterface:
             tags: [ 'ezplatform.automated_translation.block_attribute_encoder' ]
 
+        EzSystems\EzPlatformAutomatedTranslation\Encoder\FormBuilderFieldAttribute\FormBuilderFieldAttributeEncoderInterface:
+            tags: [ 'ezplatform.automated_translation.form_builder_field_encoder' ]
+
         Symfony\Component\Console\Command\Command:
             tags:
                 - { name: console.command }
                 - { name: monolog.logger, channel: translate_content_cmd }
+
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\FormBuilderFieldEncoder: ~
 
     EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\ImageFieldEncoder: ~
     # field encoder
@@ -69,6 +74,14 @@ services:
     EzSystems\EzPlatformAutomatedTranslation\Encoder\RichText\RichTextEncoder:
         arguments:
             $configResolver: '@ibexa.config.resolver'
+
+    # Form Builder Field attribute
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\FormBuilderFieldAttribute\TextLineFieldEncoder: ~
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\FormBuilderFieldAttribute\TextBlockFieldEncoder: ~
+    # Form Builder Field attribute encoder manager
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\FormBuilderFieldAttribute\FormBuilderFieldAttributeEncoderManager:
+        arguments:
+            $formBuilderFieldAttributeEncoders: !tagged_iterator 'ezplatform.automated_translation.form_builder_field_encoder'
 
     EzSystems\EzPlatformAutomatedTranslation\Encoder: ~
 
