@@ -50,10 +50,8 @@ class FormBuilderFieldEncoder implements FieldEncoderInterface
         $fieldDefinitionAttributesType = [];
         /** @var \Ibexa\Contracts\FormBuilder\FieldType\Model\Field $formField */
         foreach ($value->getFormValue()?->getFields() as $formField) {
-            dump($formField);
             $attrs = [];
-                $fieldDefinition = $this->fieldDefinitionFactory->getFieldDefinition($formField->getIdentifier());
-            dump($fieldDefinition);
+            $fieldDefinition = $this->fieldDefinitionFactory->getFieldDefinition($formField->getIdentifier());
             $fieldDefinitionAttributesType[$formField->getIdentifier()] = [];
             foreach ($fieldDefinition->getAttributes() as $attribute) {
                 $fieldDefinitionAttributesType[$formField->getIdentifier()][$attribute->getIdentifier()] = $attribute->getType();
@@ -77,7 +75,6 @@ class FormBuilderFieldEncoder implements FieldEncoderInterface
             ];
        }
 
-dump($formFields);
 
         $encoder = new XmlEncoder();
         $payload = $encoder->encode($formFields, XmlEncoder::FORMAT);
@@ -89,7 +86,6 @@ dump($formFields);
             ['<' . self::CDATA_FAKER_TAG . '>', '</' . self::CDATA_FAKER_TAG . '>'],
             $payload
         );
-        dump($payload);
 
 
         return (string) $payload;

@@ -10,10 +10,10 @@ services:
             - '../../../bundle/DependencyInjection/'
             - '../../../bundle/Entity/'
             - '../../../bundle/IbexaAutomatedTranslationBundle.php'
-
-    EzSystems\EzPlatformAutomatedTranslationBundle\Form\Type\SubtreeLocationType:
-        tags:
-            - { name: form.type, alias: field.subtree_location }
+    # Form type
+#    EzSystems\EzPlatformAutomatedTranslationBundle\Form\Type\SubtreeLocationType:
+#        tags:
+#            - { name: form.type, alias: field.subtree_location }
 
     _instanceof:
         EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\FieldEncoderInterface:
@@ -65,6 +65,8 @@ services:
         arguments:
             $richTextEncoder: '@EzSystems\EzPlatformAutomatedTranslation\Encoder\RichText\RichTextEncoder'
 
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\NestedAttributeEncoder: ~
+
     # block attribute encoder manager
     EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\BlockAttributeEncoderManager:
         arguments:
@@ -95,7 +97,7 @@ services:
 
     EzSystems\EzPlatformAutomatedTranslation\ClientProvider:
         arguments: [!tagged ezplatform.automated_translation.client]
-
+    # Form type
     EzSystems\EzPlatformAutomatedTranslationBundle\Form\Extension\TranslationAddType:
         tags:
             - { name: form.type_extension, extended_type: Ibexa\AdminUi\Form\Type\Content\Translation\TranslationAddType }

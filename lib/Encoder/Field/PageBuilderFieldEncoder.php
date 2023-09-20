@@ -122,7 +122,7 @@ final class PageBuilderFieldEncoder implements FieldEncoderInterface
                 }
             }
         }
-        dump(new Value($page));
+
         return new Value($page);
     }
 

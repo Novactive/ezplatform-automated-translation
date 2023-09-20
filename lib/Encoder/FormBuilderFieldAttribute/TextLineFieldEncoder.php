@@ -26,7 +26,7 @@ class TextLineFieldEncoder implements FormBuilderFieldAttributeEncoderInterface
 
     public function encode($value): string
     {
-        return 'TEST '.htmlentities((string) $value);
+        return htmlentities((string) $value);
     }
 
     public function decode(string $value): string
@@ -37,6 +37,6 @@ class TextLineFieldEncoder implements FormBuilderFieldAttributeEncoderInterface
             $value
         );
 
-        return 'TEST_decode '.html_entity_decode(htmlspecialchars_decode(trim($value)));
+        return html_entity_decode(htmlspecialchars_decode(trim($value)));
     }
 }
