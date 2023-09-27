@@ -152,7 +152,7 @@ final class TranslateContentCommand extends Command
                     $message = sprintf('Start Translation of subtree  %s.', $subtreeLocation->pathString);
                     $this->getLogger()->info($message);
                     $output->writeln($message);
-                    $logMessage .= $message .'</br>';
+                    $logMessage .= $message .'<br/>';
 
                     $adapter = new CallbackAdapter(
                         function () use ($subtreeLocation): int {
@@ -173,7 +173,7 @@ final class TranslateContentCommand extends Command
                     $message = sprintf('Translate "%s" contents.', $pager->count());
                     $this->getLogger()->info($message);
                     $output->writeln($message);
-                    $logMessage .= $message .'</br>';
+                    $logMessage .= $message .'<br/>';
 
                     $progressBar = new ProgressBar($output, $pager->count());
 
@@ -207,13 +207,13 @@ final class TranslateContentCommand extends Command
                             );
                             $processes->run();
                             $processes->getErrorOutput();
-                            $logMessage .= $processes->getOutput() .'</br>';
+                            $logMessage .= $processes->getOutput() .'<br/>';
                             if (!empty($processes->getErrorOutput())) {
                                 $message = $processes->getErrorOutput();
                                 $this->getLogger()->info($message);
-                                $logMessage .= $message .'</br>';
+                                $logMessage .= $message .'<br/>';
                             } else {
-                                $logMessage .= $processes->getOutput() .'</br>';
+                                $logMessage .= $processes->getOutput() .'<br/>';
                             }
                             $currentPage++;
                             $progressBar->advance($maxPerPage);

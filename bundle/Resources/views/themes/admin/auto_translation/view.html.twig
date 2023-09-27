@@ -145,7 +145,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    {{ item.log_message|raw }}
+                                                    {{ item.log_message|raw|replace({'</br>': '<br/>'})|striptags('<br><p>')|raw }}
                                                 </div>
                                             </div>
                                         </div>
