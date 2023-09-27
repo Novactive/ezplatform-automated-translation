@@ -73,6 +73,7 @@ class Translator
         $translatedFields = $this->getTranslatedFields($from, $to, $remoteServiceKey, $content);
 
         $contentDraft = $this->contentService->createContentDraft($content->contentInfo);
+
         $contentUpdateStruct = $this->contentService->newContentUpdateStruct();
         $contentUpdateStruct->initialLanguageCode = $to;
 
