@@ -91,6 +91,6 @@ class Translator
             $contentUpdateStruct->setField($fieldName, $newValue, $to);
         }
 
-        return $this->contentService->updateContent($contentDraft->versionInfo, $contentUpdateStruct);
+        return $this->contentService->updateContent($contentDraft->versionInfo, $contentUpdateStruct, []);
     }
 }
