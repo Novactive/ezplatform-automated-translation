@@ -70,6 +70,9 @@ class ContentProxyTranslateListener implements EventSubscriberInterface
 
         $fromLanguageCode = $event->getFromLanguageCode();
         $toLanguageCode = $event->getToLanguageCode();
+        if (!($fromLanguageCode && $toLanguageCode)) {
+            return;
+        }
 
         $contentDraft = $this->translator->getTranslatedContent(
             $fromLanguageCode,
