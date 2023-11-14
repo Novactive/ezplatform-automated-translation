@@ -19,4 +19,14 @@ final class Events
      * @Event("\EzSystems\EzPlatformAutomatedTranslationBundle\Event\FieldDecodeEvent")
      */
     const POST_FIELD_DECODE = 'ez_automated_translation.post_field_decode';
+
+    /**
+     * @Event("\EzSystems\EzPlatformAutomatedTranslationBundle\Event\RichTextEncodeEvent")
+     */
+    const PRE_RICHTEXT_ENCODE = 'ez_automated_translation.pre_richtext_encode';
+
+    /**
+     * @Event("\EzSystems\EzPlatformAutomatedTranslationBundle\Event\RichTextDecodeEvent")
+     */
+    const PRE_RICHTEXT_DECODE = 'ez_automated_translation.pre_richtext_decode';
 }

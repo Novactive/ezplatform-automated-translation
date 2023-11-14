@@ -20,6 +20,9 @@ class Deepl implements ClientInterface
     /** @var string */
     private $baseUri;
 
+    /** @var array */
+    private $nonSplittingTags;
+
     public function getServiceAlias(): string
     {
         return 'deepl';
@@ -36,7 +39,10 @@ class Deepl implements ClientInterface
             throw new ClientNotConfiguredException('authKey is required');
         }
         $this->authKey = $configuration['authKey'];
-        $this->baseUri = isset($configuration['baseUri']) ? $configuration['baseUri'] : 'https://api.deepl.com';
+        $this->baseUri = $configuration['baseUri'] ?? 'https://api.deepl.com';
+        if (isset($configuration['nonSplittingTags'])) {
+            $this->nonSplittingTags = array_filter(explode(',', $configuration['nonSplittingTags']));
+        }
     }
 
     public function translate(string $payload, ?string $from, string $to): string
@@ -45,8 +51,12 @@ class Deepl implements ClientInterface
             'auth_key' => $this->authKey,
             'target_lang' => $this->normalized($to),
             'tag_handling' => 'xml',
-            'text' => $payload,
+            'text' => $payload
         ];
+
+        if (!empty($this->nonSplittingTags)){
+            $parameters['non_splitting_tags'] = implode(',', $this->nonSplittingTags);
+        }
 
         if (null !== $from) {
             $parameters += [
