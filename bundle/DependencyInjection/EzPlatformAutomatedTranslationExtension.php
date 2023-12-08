@@ -45,7 +45,6 @@ class EzPlatformAutomatedTranslationExtension extends Extension implements Prepe
             return;
         }
 
-        $loader->load('ezadminui.yml');
         $loader->load('default_settings.yml');
         $loader->load('services.yml');
         // always needed because of Bundle extension.

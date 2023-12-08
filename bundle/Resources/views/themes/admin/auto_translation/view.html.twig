@@ -1,5 +1,15 @@
 {% extends '@ibexadesign/ui/layout.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('ezplatform-automated-translation-js', null, 'ibexa') }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('ezplatform-automated-translation-css', null, 'ibexa') }}
+{% endblock %}
+
 {% block content %}
     {% if form_search.vars.data.sort is defined %}
         {% set current_field = form_search.vars.data.sort['field'] %}
