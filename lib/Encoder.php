@@ -21,6 +21,7 @@ use EzSystems\EzPlatformAutomatedTranslationBundle\Events;
 use InvalidArgumentException;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Ibexa\FieldTypePage\FieldType\LandingPage\Value as LandingPageValue;
 
 /**
  * Class Encoder.
@@ -76,10 +77,10 @@ class Encoder
     /** @var ContentTypeService */
     private $contentTypeService;
 
-    /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface */
+    /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
-    /** @var \EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\FieldEncoderManager */
+    /** @var FieldEncoderManager */
     private $fieldEncoderManager;
 
     public function __construct(
@@ -103,6 +104,10 @@ class Encoder
                 continue;
             }
             $type = \get_class($field->value);
+
+            if ($field->value instanceof LandingPageValue){
+                $type = LandingPageValue::class;
+            }
 
             if (null === ($value = $this->encodeField($field))) {
                 continue;
