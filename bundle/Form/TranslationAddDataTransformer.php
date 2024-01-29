@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslationBundle\Form;
 
-use EzSystems\EzPlatformAdminUi\Form\Data\Content\Translation\TranslationAddData as BaseTranslationAddData;
+use Ibexa\AdminUi\Form\Data\Content\Translation\TranslationAddData as BaseTranslationAddData;
 use EzSystems\EzPlatformAutomatedTranslationBundle\Form\Data\TranslationAddData;
 use Symfony\Component\Form\DataTransformerInterface;
 

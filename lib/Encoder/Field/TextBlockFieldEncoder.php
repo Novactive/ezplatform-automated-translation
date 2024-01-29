@@ -10,25 +10,25 @@ namespace EzSystems\EzPlatformAutomatedTranslation\Encoder\Field;
 
 use EzSystems\EzPlatformAutomatedTranslation\Encoder;
 use Ibexa\Contracts\Core\Repository\Values\Content\Field;
-use Ibexa\Core\FieldType\TextLine\Value as TextLineValue;
+use Ibexa\Core\FieldType\TextBlock\Value as TextBlockValue;
 use Ibexa\Core\FieldType\Value;
 use EzSystems\EzPlatformAutomatedTranslation\Exception\EmptyTranslatedFieldException;
 
-final class TextLineFieldEncoder implements FieldEncoderInterface
+final class TextBlockFieldEncoder implements FieldEncoderInterface
 {
     public function canEncode(Field $field): bool
     {
-        return $field->value instanceof TextLineValue;
+        return $field->value instanceof TextBlockValue;
     }
 
     public function canDecode(string $type): bool
     {
-        return TextLineValue::class === $type;
+        return TextBlockValue::class === $type;
     }
 
     public function encode(Field $field): string
     {
-        return htmlentities((string) $field->value);
+        return (string) $field->value;
     }
 
     public function decode(string $value, $previousFieldValue): Value
@@ -44,6 +44,6 @@ final class TextLineFieldEncoder implements FieldEncoderInterface
             throw new EmptyTranslatedFieldException();
         }
 
-        return new TextLineValue($value);
+        return new TextBlockValue($value);
     }
 }

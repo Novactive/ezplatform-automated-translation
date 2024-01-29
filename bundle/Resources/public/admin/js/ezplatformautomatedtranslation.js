@@ -1,33 +1,22 @@
-jQuery(function () {
-    let $ = jQuery;
-    let $form = $("form[name=add-translation]", "#add-translation-modal");
-    let $container = $(".ezautomatedtranslation-services-container:first", $form);
-    let $error = $(".ezautomatedtranslation-error", $container);
+(function () {
+    let form = document.querySelector('#add-translation-modal form[name=add-translation]');
+    let targetSelect = form.querySelector('.target-language')
+    let container = form.querySelector('.ezautomatedtranslation-services-container')
+    let serviceSelector = form.querySelector('#add-translation_translatorAlias')
+    let error = container.querySelector('.ezautomatedtranslation-error')
 
-    $form.click(function () {
-        $error.addClass("invisible");
+    targetSelect.addEventListener("click", (e) => {
+        error.classList.add("invisible");
     });
 
-    $container.find(".ez-field-edit--ezboolean .ez-data-source__label").click(function () {
-        let $input = $(this).find("input[type='checkbox']");
-        let isChecked = $input.attr('checked') === 'checked';
-        if (isChecked) {
-            $input.removeAttr('checked');
-            $(this).removeClass('is-checked');
-        } else {
-            $(this).addClass('is-checked');
-            $input.attr('checked', 'checked');
-        }
-        return false;
-    });
-
-    $("form[name=add-translation]").submit(function () {
-        let targetLang = $("select[name=add-translation\\[language\\]]").val();
-        let sourceLang = $("select[name=add-translation\\[base_language\\]]").val();
-        let mapping = $container.data('languages-mapping');
-        let $serviceSelector = $("#add-translation_translatorAlias");
-        let serviceAlias = $serviceSelector.val();
-        if ($serviceSelector.is("[type=checkbox]") && !$serviceSelector.is(":checked")) {
+    form.addEventListener("submit", (e) => {
+        let targetLangSelect = form.querySelector("select[name=add-translation\\[language\\]]");
+        let sourceLangSelect = form.querySelector("select[name=add-translation\\[base_language\\]]");
+        let targetLang = targetLangSelect.value;
+        let sourceLang = sourceLangSelect.value;
+        let mapping = container.dataset.languagesMapping;
+        let serviceAlias = serviceSelector.value;
+        if (serviceSelector.getAttribute('type') === "checkbox" && serviceSelector.getAttribute('checked') === 'checked') {
             serviceAlias = '';
         }
 
@@ -35,13 +24,12 @@ jQuery(function () {
             return true;
         }
 
-        let translationAvailable = (typeof sourceLang === 'undefined' || -1 !== $.inArray(sourceLang, mapping[serviceAlias])) && (-1 !== $.inArray(targetLang, mapping[serviceAlias]));
+        let mappingForServiceAlias = mapping[serviceAlias]
+        let translationAvailable = sourceLang.includes(mappingForServiceAlias) && targetLang.includes(mappingForServiceAlias);
         if (false === translationAvailable) {
-            $error.removeClass("invisible");
-            if ($container.find(".ez-field-edit--ezboolean .ez-data-source__label").hasClass('is-checked')) {
-                $container.find(".ez-field-edit--ezboolean .ez-data-source__label").click();
-                return false;
-            }
+            error.classList.remove("invisible");
+            e.preventDefault();
+            return false;
         }
         return true;
     });

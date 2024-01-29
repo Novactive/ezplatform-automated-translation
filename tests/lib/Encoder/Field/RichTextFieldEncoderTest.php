@@ -8,10 +8,10 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslation\Tests\Encoder\Field;
 
-use eZ\Publish\API\Repository\Values\Content\Field;
+use Ibexa\Contracts\Core\Repository\Values\Content\Field;
 use EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\RichTextFieldEncoder;
 use EzSystems\EzPlatformAutomatedTranslation\Encoder\RichText\RichTextEncoder;
-use EzSystems\EzPlatformRichText\eZ\FieldType\RichText;
+use Ibexa\FieldTypeRichText\FieldType\RichText;
 use PHPUnit\Framework\TestCase;
 
 class RichTextFieldEncoderTest extends TestCase

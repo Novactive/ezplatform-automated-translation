@@ -10,9 +10,9 @@ namespace EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute;
 
 use EzSystems\EzPlatformAutomatedTranslation\Encoder;
 
-class TextBlockAttributeEncoder implements BlockAttributeEncoderInterface
+class TextLineAttributeEncoder implements BlockAttributeEncoderInterface
 {
-    private const TYPE = 'text';
+    private const TYPE = 'string';
 
     public function canEncode(string $type): bool
     {

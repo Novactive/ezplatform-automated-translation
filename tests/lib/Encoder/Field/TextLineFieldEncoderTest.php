@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslation\Tests\Encoder\Field;
 
-use eZ\Publish\API\Repository\Values\Content\Field;
-use eZ\Publish\Core\FieldType\TextLine;
+use Ibexa\Contracts\Core\Repository\Values\Content\Field;
+use Ibexa\Core\FieldType\TextLine;
 use EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\TextLineFieldEncoder;
 use PHPUnit\Framework\TestCase;
 

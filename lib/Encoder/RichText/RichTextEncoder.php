@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslation\Encoder\RichText;
 
-use eZ\Publish\Core\MVC\ConfigResolverInterface;
+use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
 
 final class RichTextEncoder
 {
@@ -70,7 +70,7 @@ final class RichTextEncoder
             'ez_platform_automated_translation'
         );
 
-        $this->nonTranslatableTags = ['ezvalue', 'ezconfig', 'ezembed'] + $tags;
+        $this->nonTranslatableTags = ['ezembed'] + $tags;
         $this->nonTranslatableSelfClosingTags = ['ezembedinline'] + $selfClosedTags;
         $this->nonTranslatableCharactersHashMap = [
                 "\n" => '<XEOL />',
