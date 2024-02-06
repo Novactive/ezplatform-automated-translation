@@ -22,8 +22,8 @@ class Configuration extends SiteAccessAware\Configuration
             ->variableNode('configurations')->end()
             ->arrayNode('non_translatable_characters')->end()
             ->arrayNode('non_translatable_tags')->end()
-            ->arrayNode('non_translatable_self_closed_tags')->end();
-
+            ->arrayNode('non_translatable_self_closed_tags')->end()
+            ->arrayNode('exclude_attribute')->end();
         return $treeBuilder;
     }
 }

@@ -11,6 +11,7 @@ namespace EzSystems\EzPlatformAutomatedTranslation;
 use Ibexa\Contracts\Core\Repository\ContentTypeService;
 use Ibexa\Contracts\Core\Repository\Values\Content\Content;
 use Ibexa\Contracts\Core\Repository\Values\Content\Field;
+use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
 use Ibexa\Core\FieldType\Value;
 use Ibexa\Contracts\Core\FieldType\Value as SPIValue;
 use EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\FieldEncoderManager;
@@ -83,14 +84,18 @@ class Encoder
     /** @var FieldEncoderManager */
     private $fieldEncoderManager;
 
+    /** @var ConfigResolverInterface */
+    private $configResolver;
     public function __construct(
         ContentTypeService $contentTypeService,
         EventDispatcherInterface $eventDispatcher,
-        FieldEncoderManager $fieldEncoderManager
+        FieldEncoderManager $fieldEncoderManager,
+        ConfigResolverInterface $configResolver,
     ) {
         $this->contentTypeService = $contentTypeService;
         $this->eventDispatcher = $eventDispatcher;
         $this->fieldEncoderManager = $fieldEncoderManager;
+        $this->configResolver = $configResolver;
     }
 
     public function encode(Content $content): string
@@ -131,19 +136,25 @@ class Encoder
 
     public function decode(string $xml, Content $sourceContent): array
     {
+        $excludeAttributes = (array) $this->configResolver
+            ->getParameter('exclude_attributes', 'ez_platform_automated_translation');
         $encoder = new XmlEncoder();
         $data = str_replace(
             ['<' . self::CDATA_FAKER_TAG . '>', '</' . self::CDATA_FAKER_TAG . '>'],
             ['<![CDATA[' . self::XML_MARKUP, ']]>'],
             $xml
         );
-
+        $contentTypeIdentifier = $sourceContent->getContentType()->identifier;
         $decodeArray = $encoder->decode($data, XmlEncoder::FORMAT);
         $results = [];
         foreach ($decodeArray as $fieldIdentifier => $xmlValue) {
             $previousFieldValue = $sourceContent->getField($fieldIdentifier)->value;
             $type = $xmlValue['@type'];
             $stringValue = $xmlValue['#'];
+            $excludeAttribute = $contentTypeIdentifier.'/'.$fieldIdentifier;
+            if (in_array($excludeAttribute, $excludeAttributes, true)){
+                continue;
+            }
 
             if (null === ($fieldValue = $this->decodeField($type, $stringValue, $previousFieldValue))) {
                 continue;
