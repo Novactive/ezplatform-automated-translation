@@ -13,6 +13,7 @@ use Ibexa\Contracts\Core\Repository\ContentTypeService;
 use Ibexa\Contracts\Core\Repository\Values\Content\Content;
 use Ibexa\Contracts\Core\Repository\Values\ContentType\FieldDefinition;
 use Ibexa\Core\MVC\Symfony\Locale\LocaleConverterInterface;
+use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
 
 class Translator
 {
@@ -28,19 +29,21 @@ class Translator
     /** @var Encoder */
     private $encoder;
 
-    /** @var \Ibexa\Contracts\Core\Repository\ContentService */
+    /** @var ContentService */
     private $contentService;
 
-    /** @var \Ibexa\Contracts\Core\Repository\ContentTypeService */
+    /** @var ContentTypeService */
     private $contentTypeService;
-
+    /** @var ConfigResolverInterface */
+    private $configResolver;
     public function __construct(
         TranslatorGuard $guard,
         LocaleConverterInterface $localeConverter,
         ClientProvider $clientProvider,
         Encoder $encoder,
         ContentService $contentService,
-        ContentTypeService $contentTypeService
+        ContentTypeService $contentTypeService,
+        ConfigResolverInterface $configResolver
     ) {
         $this->guard = $guard;
         $this->localeConverter = $localeConverter;
@@ -48,6 +51,7 @@ class Translator
         $this->encoder = $encoder;
         $this->contentService = $contentService;
         $this->contentTypeService = $contentTypeService;
+        $this->configResolver = $configResolver;
     }
 
     public function getTranslatedFields(?string $from, ?string $to, string $remoteServiceKey, Content $content): array
@@ -80,15 +84,24 @@ class Translator
         $contentType = $this->contentTypeService->loadContentType(
             $content->contentInfo->contentTypeId
         );
+        $excludeAttributes = (array) $this->configResolver
+            ->getParameter('overwrite_exclude_attributes', 'ez_platform_automated_translation');
 
         foreach ($contentType->getFieldDefinitions() as $field) {
             if (!$field->isTranslatable) {
                 continue;
             }
-
             /** @var FieldDefinition $field */
             $fieldName = $field->identifier;
-            $newValue = $translatedFields[$fieldName] ?? $content->getFieldValue($fieldName);
+            //Exclude fields from overwrite translation
+            $excludeAttribute = $contentType->identifier.'/'.$field->identifier;
+            if (in_array($excludeAttribute, $excludeAttributes, true) &&
+                null !== $contentDraft->getFieldValue($fieldName, $to)
+            ) {
+                $newValue = $contentDraft->getFieldValue($fieldName, $to);
+            } else {
+                $newValue = $translatedFields[$fieldName] ?? $content->getFieldValue($fieldName);
+            }
             $contentUpdateStruct->setField($fieldName, $newValue, $to);
         }
 
