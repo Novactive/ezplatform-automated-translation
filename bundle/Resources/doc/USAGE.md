@@ -38,7 +38,7 @@ ez_platform_automated_translation:
                         hu_HU: HU
                         it_CH: IT
                         it_IT: IT
-                        ja_JP: JP
+                        ja_JP: JA
                         ko_KR: KO
                         lt_LT: LT
                         lv_LV: LV
