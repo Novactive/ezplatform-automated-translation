@@ -4,6 +4,17 @@ services:
         autoconfigure: true
         public: false
 
+    EzSystems\EzPlatformAutomatedTranslationBundle\:
+        resource: '../../../bundle/*'
+        exclude:
+            - '../../../bundle/DependencyInjection/'
+            - '../../../bundle/Entity/'
+            - '../../../bundle/IbexaAutomatedTranslationBundle.php'
+    # Form type
+#    EzSystems\EzPlatformAutomatedTranslationBundle\Form\Type\SubtreeLocationType:
+#        tags:
+#            - { name: form.type, alias: field.subtree_location }
+
     _instanceof:
         EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\FieldEncoderInterface:
             tags: [ 'ezplatform.automated_translation.field_encoder' ]
@@ -11,6 +22,17 @@ services:
         EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\BlockAttributeEncoderInterface:
             tags: [ 'ezplatform.automated_translation.block_attribute_encoder' ]
 
+        EzSystems\EzPlatformAutomatedTranslation\Encoder\FormBuilderFieldAttribute\FormBuilderFieldAttributeEncoderInterface:
+            tags: [ 'ezplatform.automated_translation.form_builder_field_encoder' ]
+
+        Symfony\Component\Console\Command\Command:
+            tags:
+                - { name: console.command }
+                - { name: monolog.logger, channel: translate_content_cmd }
+
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\FormBuilderFieldEncoder: ~
+
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\ImageFieldEncoder: ~
     # field encoder
     EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\TextLineFieldEncoder: ~
 
@@ -43,6 +65,8 @@ services:
         arguments:
             $richTextEncoder: '@EzSystems\EzPlatformAutomatedTranslation\Encoder\RichText\RichTextEncoder'
 
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\NestedAttributeEncoder: ~
+
     # block attribute encoder manager
     EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\BlockAttributeEncoderManager:
         arguments:
@@ -52,6 +76,14 @@ services:
     EzSystems\EzPlatformAutomatedTranslation\Encoder\RichText\RichTextEncoder:
         arguments:
             $configResolver: '@ibexa.config.resolver'
+
+    # Form Builder Field attribute
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\FormBuilderFieldAttribute\TextLineFieldEncoder: ~
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\FormBuilderFieldAttribute\TextBlockFieldEncoder: ~
+    # Form Builder Field attribute encoder manager
+    EzSystems\EzPlatformAutomatedTranslation\Encoder\FormBuilderFieldAttribute\FormBuilderFieldAttributeEncoderManager:
+        arguments:
+            $formBuilderFieldAttributeEncoders: !tagged_iterator 'ezplatform.automated_translation.form_builder_field_encoder'
 
     EzSystems\EzPlatformAutomatedTranslation\Encoder: ~
 
@@ -65,11 +97,7 @@ services:
 
     EzSystems\EzPlatformAutomatedTranslation\ClientProvider:
         arguments: [!tagged ezplatform.automated_translation.client]
-
-    EzSystems\EzPlatformAutomatedTranslationBundle\Command\:
-        resource: '../../Command/*'
-        tags: ['console.command']
-
+    # Form type
     EzSystems\EzPlatformAutomatedTranslationBundle\Form\Extension\TranslationAddType:
         tags:
             - { name: form.type_extension, extended_type: Ibexa\AdminUi\Form\Type\Content\Translation\TranslationAddType }
@@ -84,4 +112,9 @@ services:
         tags:
             - { name: form.type_extension, extended_type: Ibexa\AdminUi\Form\Type\Language\LanguageCreateType }
 
-    EzSystems\EzPlatformAutomatedTranslationBundle\EventListener\ContentProxyTranslateListener: ~
+
+    EzSystems\EzPlatformAutomatedTranslationBundle\Handler\AutoTranslationActionsHandler:
+        lazy: true
+        arguments:
+            $connection: '@ibexa.persistence.connection'
+            $criteriaConverter: '@ibexa.search.legacy.gateway.criteria_converter.location'

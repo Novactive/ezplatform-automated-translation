@@ -38,7 +38,7 @@ final class TextLineFieldEncoder implements FieldEncoderInterface
             '',
             $value
         );
-        $value = htmlspecialchars_decode(trim($value));
+        $value = html_entity_decode(htmlspecialchars_decode(trim($value)));
 
         if (strlen($value) === 0) {
             throw new EmptyTranslatedFieldException();

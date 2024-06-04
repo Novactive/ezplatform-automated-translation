@@ -28,7 +28,7 @@ final class TextBlockFieldEncoder implements FieldEncoderInterface
 
     public function encode(Field $field): string
     {
-        return (string) $field->value;
+        return htmlentities((string) $field->value);
     }
 
     public function decode(string $value, $previousFieldValue): Value
@@ -38,7 +38,7 @@ final class TextBlockFieldEncoder implements FieldEncoderInterface
             '',
             $value
         );
-        $value = htmlspecialchars_decode(trim($value));
+        $value = html_entity_decode(htmlspecialchars_decode(trim($value)));
 
         if (strlen($value) === 0) {
             throw new EmptyTranslatedFieldException();

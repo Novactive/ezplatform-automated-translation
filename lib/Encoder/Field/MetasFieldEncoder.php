@@ -2,8 +2,8 @@
 
 namespace EzSystems\EzPlatformAutomatedTranslation\Encoder\Field;
 
-use eZ\Publish\API\Repository\Values\Content\Field;
-use eZ\Publish\Core\FieldType\Value;
+use Ibexa\Contracts\Core\Repository\Values\Content\Field;
+use Ibexa\Core\FieldType\Value;
 use Novactive\Bundle\eZSEOBundle\Core\FieldType\Metas\Value as MetasValue;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 

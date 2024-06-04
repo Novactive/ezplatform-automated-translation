@@ -8,7 +8,11 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslation\Encoder\RichText;
 
+use EzSystems\EzPlatformAutomatedTranslationBundle\Event\RichTextDecodeEvent;
+use EzSystems\EzPlatformAutomatedTranslationBundle\Event\RichTextEncodeEvent;
+use EzSystems\EzPlatformAutomatedTranslationBundle\Events;
 use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class RichTextEncoder
 {
@@ -47,9 +51,14 @@ final class RichTextEncoder
     /** @var array */
     private $placeHolderMap;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     public function __construct(
-        ConfigResolverInterface $configResolver
+        ConfigResolverInterface $configResolver,
+        EventDispatcherInterface $eventDispatcher,
     ) {
+        $this->eventDispatcher = $eventDispatcher;
         $tags = $configResolver->getParameter(
             'non_translatable_tags',
             'ez_platform_automated_translation'
@@ -86,6 +95,10 @@ final class RichTextEncoder
 
     public function encode(string $xmlString): string
     {
+        $event = new RichTextEncodeEvent($xmlString);
+        $this->eventDispatcher->dispatch($event, Events::PRE_RICHTEXT_ENCODE);
+        $xmlString = $event->getValue();
+
         if (strpos($xmlString, self::XML_MARKUP . "\n") !== false) {
             $xmlString = substr($xmlString, strlen(self::XML_MARKUP . "\n"));
         }
@@ -132,17 +145,20 @@ final class RichTextEncoder
             $xmlString = str_replace("</{$tag}>", "</fake{$tag}>", $xmlString);
         }
 
-        $xmlString = str_replace(
+        return str_replace(
             ['<![CDATA[', ']]>'],
             ['<' . self::CDATA_FAKER_TAG . '>', '</' . self::CDATA_FAKER_TAG . '>'],
             $xmlString
         );
 
-        return $xmlString;
     }
 
     public function decode(string $value): string
     {
+        $event = new RichTextDecodeEvent($value);
+        $this->eventDispatcher->dispatch($event, Events::PRE_RICHTEXT_DECODE);
+        $value = $event->getValue();
+
         $value = str_replace(
             ['<' . self::CDATA_FAKER_TAG . '>', '</' . self::CDATA_FAKER_TAG . '>'],
             ['<![CDATA[', ']]>'],

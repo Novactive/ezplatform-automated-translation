@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslationBundle\DependencyInjection;
 
-use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware;
+use Ibexa\Bundle\Core\DependencyInjection\Configuration\SiteAccessAware;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 class Configuration extends SiteAccessAware\Configuration
@@ -22,8 +22,8 @@ class Configuration extends SiteAccessAware\Configuration
             ->variableNode('configurations')->end()
             ->arrayNode('non_translatable_characters')->end()
             ->arrayNode('non_translatable_tags')->end()
-            ->arrayNode('non_translatable_self_closed_tags')->end();
-
+            ->arrayNode('non_translatable_self_closed_tags')->end()
+            ->arrayNode('exclude_attribute')->end();
         return $treeBuilder;
     }
 }
