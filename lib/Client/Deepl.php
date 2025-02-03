@@ -54,14 +54,13 @@ class Deepl implements ClientInterface
     public function translate(string $payload, ?string $from, string $to): string
     {
         $parameters = [
-            'auth_key' => $this->authKey,
             'target_lang' => $this->normalized($to),
             'tag_handling' => 'xml',
-            'text' => $payload
+            'text' => [$payload]
         ];
 
         if (!empty($this->nonSplittingTags)){
-            $parameters['non_splitting_tags'] = implode(',', $this->nonSplittingTags);
+            $parameters['non_splitting_tags'] = $this->nonSplittingTags;
         }
 
         if (null !== $from) {
@@ -76,7 +75,12 @@ class Deepl implements ClientInterface
                 'timeout' => 5.0,
             ]
         );
-        $response = $http->post('/v2/translate', ['form_params' => $parameters]);
+        $response = $http->post('/v2/translate', [
+            'headers' => [
+                'Authorization' => 'DeepL-Auth-Key ' . $this->authKey
+            ],
+            'json' => $parameters
+        ]);
         // May use the native json method from guzzle
         $json = json_decode($response->getBody()->getContents());
 
