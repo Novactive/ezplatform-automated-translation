@@ -8,16 +8,15 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslation\Client;
 
+use DeepL\DeepLClient;
+use DeepL\DeepLException;
+use DeepL\TranslateTextOptions;
 use EzSystems\EzPlatformAutomatedTranslation\Exception\ClientNotConfiguredException;
-use GuzzleHttp\Client;
 
 class Deepl implements ClientInterface
 {
     /** @var string */
     private string $authKey;
-
-    /** @var string */
-    private string $baseUri;
 
     /** @var array */
     private array $nonSplittingTags;
@@ -41,7 +40,7 @@ class Deepl implements ClientInterface
             throw new ClientNotConfiguredException('authKey is required');
         }
         $this->authKey = $configuration['authKey'];
-        $this->baseUri = $configuration['baseUri'] ?? 'https://api.deepl.com';
+
         if (isset($configuration['nonSplittingTags'])) {
             $this->nonSplittingTags = array_filter(explode(',', $configuration['nonSplittingTags']));
         }
@@ -51,40 +50,30 @@ class Deepl implements ClientInterface
 
     }
 
+    /**
+     * @throws DeepLException
+     */
     public function translate(string $payload, ?string $from, string $to): string
     {
-        $parameters = [
-            'target_lang' => $this->normalized($to),
-            'tag_handling' => 'xml',
-            'text' => [$payload]
+        $sourceLang = null;
+        $targetLang = $this->normalized($to);
+        $options = [
+            TranslateTextOptions::TAG_HANDLING => 'xml',
         ];
 
-        if (!empty($this->nonSplittingTags)){
-            $parameters['non_splitting_tags'] = $this->nonSplittingTags;
+        if (!empty($this->nonSplittingTags)) {
+            $options[TranslateTextOptions::NON_SPLITTING_TAGS] = $this->nonSplittingTags;
         }
 
         if (null !== $from) {
-            $parameters += [
-                'source_lang' => $this->normalized($from),
-            ];
+            $sourceLang = $this->normalized($from);
         }
 
-        $http = new Client(
-            [
-                'base_uri' => $this->baseUri,
-                'timeout' => 5.0,
-            ]
-        );
-        $response = $http->post('/v2/translate', [
-            'headers' => [
-                'Authorization' => 'DeepL-Auth-Key ' . $this->authKey
-            ],
-            'json' => $parameters
-        ]);
-        // May use the native json method from guzzle
-        $json = json_decode($response->getBody()->getContents());
+        $deeplClient = new DeepLClient($this->authKey);
 
-        return $json->translations[0]->text;
+        $result = $deeplClient->translateText($payload, $sourceLang, $targetLang, $options);
+
+        return $result->text;
     }
 
     public function supportsLanguage(string $languageCode): bool

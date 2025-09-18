@@ -15,7 +15,6 @@ ez_platform_automated_translation:
                     apiKey: 'google-api-key'
                 deepl:
                     authKey: 'deepl-pro-key'
-                    baseUri: 'api-url' #NEEDED ONLY FOR FREE API#
                     nonSplittingTags: 'emphasis,subscript,superscript,strong'
                     supported_languages_mapping:
                         en_US: EN-US
