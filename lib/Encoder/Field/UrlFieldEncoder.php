@@ -25,7 +25,7 @@ final class UrlFieldEncoder implements FieldEncoderInterface
         return UrlValue::class === $type;
     }
 
-    public function encode(Field $field): string
+    public function encode(Field $field, ?string $from, ?string $to): string
     {
         return (string) $field->value->text;
     }

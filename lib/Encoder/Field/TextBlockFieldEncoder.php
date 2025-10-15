@@ -26,9 +26,14 @@ final class TextBlockFieldEncoder implements FieldEncoderInterface
         return TextBlockValue::class === $type;
     }
 
-    public function encode(Field $field): string
+    public function encode(Field $field, ?string $from, ?string $to): string
     {
-        return htmlentities((string) $field->value);
+        $value = (string) $field->value;
+        if(FieldEncoderManager::CHINESE_LANGUAGES_CODS){
+            $value= strtolower($value);
+        }
+
+        return htmlentities($value);
     }
 
     public function decode(string $value, $previousFieldValue): Value

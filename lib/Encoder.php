@@ -94,7 +94,7 @@ class Encoder
 
     }
 
-    public function encode(Content $content): string
+    public function encode(Content $content, ?string $from, ?string $to): string
     {
         $results = [];
         $contentType = $this->contentTypeService->loadContentType($content->contentInfo->contentTypeId);
@@ -110,7 +110,7 @@ class Encoder
                 $type = LandingPageValue::class;
             }
 
-            if (null === ($value = $this->encodeField($field))) {
+            if (null === ($value = $this->encodeField($field, $from, $to))) {
                 continue;
             }
 
@@ -168,10 +168,10 @@ class Encoder
         return $results;
     }
 
-    private function encodeField(Field $field): ?string
+    private function encodeField(Field $field, ?string $from, ?string $to): ?string
     {
         try {
-            $value = $this->fieldEncoderManager->encode($field);
+            $value = $this->fieldEncoderManager->encode($field, $from, $to);
         } catch (InvalidArgumentException $e) {
             return null;
         }

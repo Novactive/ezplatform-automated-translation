@@ -17,7 +17,7 @@ interface FieldEncoderInterface
 
     public function canDecode(string $type): bool;
 
-    public function encode(Field $field): string;
+    public function encode(Field $field, ?string $from, ?string $to): string;
 
     /**
      * @param mixed $previousFieldValue

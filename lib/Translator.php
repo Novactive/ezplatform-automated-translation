@@ -64,7 +64,7 @@ class Translator
         $this->guard->enforceTargetLanguageExist($to);
 
         $sourceContent = $this->guard->fetchContent($content, $from);
-        $payload = $this->encoder->encode($sourceContent);
+        $payload = $this->encoder->encode($sourceContent, $from, $to);
         $posixTo = $this->localeConverter->convertToPOSIX($to);
         $remoteService = $this->clientProvider->get($remoteServiceKey);
         $translatedPayload = $remoteService->translate($payload, $posixFrom, $posixTo);

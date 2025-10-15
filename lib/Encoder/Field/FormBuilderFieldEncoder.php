@@ -41,7 +41,7 @@ class FormBuilderFieldEncoder implements FieldEncoderInterface
         return FormValue::class === $type;
     }
 
-    public function encode(Field $field): string
+    public function encode(Field $field, ?string $from, ?string $to): string
     {
         /** @var FormValue $value */
         $value = $field->value;

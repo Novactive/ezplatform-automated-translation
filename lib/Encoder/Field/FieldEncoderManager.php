@@ -14,6 +14,7 @@ use InvalidArgumentException;
 
 final class FieldEncoderManager
 {
+    public const CHINESE_LANGUAGES_CODS = ['chi-CN', 'chi-HK','chi-TW'];
     /** @var FieldEncoderInterface[]|iterable */
     private $fieldEncoders;
 
@@ -25,11 +26,11 @@ final class FieldEncoderManager
         $this->fieldEncoders = $fieldEncoders;
     }
 
-    public function encode(Field $field): string
+    public function encode(Field $field, ?string $from, ?string $to): string
     {
         foreach ($this->fieldEncoders as $fieldEncoder) {
             if ($fieldEncoder->canEncode($field)) {
-                return $fieldEncoder->encode($field);
+                return $fieldEncoder->encode($field, $from, $to);
             }
         }
 

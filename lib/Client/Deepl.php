@@ -101,7 +101,7 @@ class Deepl implements ClientInterface
     /**
      * List of available code https://www.deepl.com/docs-api/translate-text
      */
-    private const LANGUAGE_CODES = ['BG', 'CS','DA', 'DE', 'EL', 'EN','EN-GB','EN-US', 'ES', 'ET',
+    private const LANGUAGE_CODES = ['AR','BG', 'CS','DA', 'DE', 'EL', 'EN','EN-GB','EN-US', 'ES', 'ET',
         'FI','FR', 'HU', 'ID', 'IT', 'JA', 'KO', 'LT', 'LV', 'NB', 'NL', 'PL', 'PT', 'PT-BR', 'PT-PT', 'RO',
          'RU', 'SK', 'SL', 'SV', 'TR', 'UK', 'ZH'
     ];
