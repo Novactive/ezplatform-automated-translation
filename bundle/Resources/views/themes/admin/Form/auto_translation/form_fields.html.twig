@@ -1,0 +1,53 @@
+{% extends '@IbexaAdminUi/themes/admin/ui/form_fields.html.twig' %}
+
+{% block form_errors -%}
+    <div class="ibexa-form-error"> {{ parent() }}</div>
+{%- endblock form_errors %}
+
+{% block submit_widget %}
+    <br>
+    <button type="submit" class="btn ibexa-btn ibexa-btn--primary">
+        <svg class="ibexa-icon ibexa-icon--small">
+            <use xlink:href="/bundles/ibexaicons/img/all-icons.svg#create"></use>
+        </svg>
+        <span class="ibexa-btn__label">{{ "auto_translation.form.submit"|trans() }}</span>
+    </button>
+{% endblock %}
+
+{% block subtree_location_widget %}
+    <div>
+        <input class="ibexa-data-source__input ibexa-input ibexa-input--text form-control"
+                type="hidden" id="{{ form.location.vars["id"] }}" name="{{ form.location.vars["full_name"] }}"
+               value="{{ form.location.vars["value"] }}" required="required"/>
+    </div>
+    <div>
+        <button class="{{ form.vars.attr['class'] }}"
+                data-udw-config="{{ ibexa_udw_config('auto_translation') }}"
+                data-location-input-selector="#{{ form.location.vars["id"] }}"
+                data-selected-location-list-selector="#{{ form.location.vars["id"] }}-selected-location"
+                type="button">
+            <svg class="ibexa-icon">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{{ ibexa_icon_path('relations') }}"></use>
+            </svg>
+            <span class="ibexa-relations__cta-btn-label auto-translation-field__label"
+                  data-location-input-selector="#{{ form.location.vars["id"] }}"
+                  data-selected-location-list-selector="#{{ form.location.vars["id"] }}-selected-location"
+            >
+                {{ "auto_translation.form.location.label"|trans() }}
+            </span>
+        </button>
+    </div>
+    <div>
+        <div id="{{ form.location.vars["id"] }}-selected-location">
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block _auto_translation_actions_overwrite_row -%}
+    {% use '@ibexadesign/ui/form_fields/toggle_widget.html.twig' %}
+    <div class="form-group">
+        {{ block('form_label') }}
+        {{ block('toggle_widget') }}
+    </div>
+{%- endblock %}

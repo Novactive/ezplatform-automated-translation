@@ -4,4 +4,4 @@ parameters:
     ez_platform_automated_translation.default.non_translatable_tags: []
     ez_platform_automated_translation.default.non_translatable_self_closed_tags: []
     ez_platform_automated_translation.default.non_valid_attribute_tags: []
-
+    ez_platform_automated_translation.default.overwrite_exclude_attributes: []

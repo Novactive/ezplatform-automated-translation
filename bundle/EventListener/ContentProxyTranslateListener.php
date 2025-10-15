@@ -18,16 +18,16 @@ use Symfony\Component\Routing\RouterInterface;
 
 class ContentProxyTranslateListener implements EventSubscriberInterface
 {
-    /** @var \Symfony\Component\HttpFoundation\RequestStack */
+    /** @var RequestStack */
     private $requestStack;
 
-    /** @var \EzSystems\EzPlatformAutomatedTranslation\Translator */
+    /** @var Translator */
     private $translator;
 
-    /** @var \Ibexa\Contracts\Core\Repository\ContentService */
+    /** @var ContentService */
     private $contentService;
 
-    /** @var \Symfony\Component\Routing\RouterInterface */
+    /** @var RouterInterface */
     private $router;
 
     public function __construct(

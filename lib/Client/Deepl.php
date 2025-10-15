@@ -8,17 +8,21 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslation\Client;
 
+use DeepL\DeepLClient;
+use DeepL\DeepLException;
+use DeepL\TranslateTextOptions;
 use EzSystems\EzPlatformAutomatedTranslation\Exception\ClientNotConfiguredException;
-use EzSystems\EzPlatformAutomatedTranslation\Exception\InvalidLanguageCodeException;
-use GuzzleHttp\Client;
 
 class Deepl implements ClientInterface
 {
     /** @var string */
-    private $authKey;
+    private string $authKey;
 
-    /** @var string */
-    private $baseUri;
+    /** @var array */
+    private array $nonSplittingTags;
+
+    /** @var array */
+    private array $supportedLanguagesMapping = [];
 
     public function getServiceAlias(): string
     {
@@ -36,35 +40,40 @@ class Deepl implements ClientInterface
             throw new ClientNotConfiguredException('authKey is required');
         }
         $this->authKey = $configuration['authKey'];
-        $this->baseUri = isset($configuration['baseUri']) ? $configuration['baseUri'] : 'https://api.deepl.com';
-    }
 
-    public function translate(string $payload, ?string $from, string $to): string
-    {
-        $parameters = [
-            'auth_key' => $this->authKey,
-            'target_lang' => $this->normalized($to),
-            'tag_handling' => 'xml',
-            'text' => $payload,
-        ];
-
-        if (null !== $from) {
-            $parameters += [
-                'source_lang' => $this->normalized($from),
-            ];
+        if (isset($configuration['nonSplittingTags'])) {
+            $this->nonSplittingTags = array_filter(explode(',', $configuration['nonSplittingTags']));
+        }
+        if (isset($configuration['supported_languages_mapping'])) {
+            $this->supportedLanguagesMapping = array_unique((array) $configuration['supported_languages_mapping']);
         }
 
-        $http = new Client(
-            [
-                'base_uri' => $this->baseUri,
-                'timeout' => 5.0,
-            ]
-        );
-        $response = $http->post('/v2/translate', ['form_params' => $parameters]);
-        // May use the native json method from guzzle
-        $json = json_decode($response->getBody()->getContents());
+    }
 
-        return $json->translations[0]->text;
+    /**
+     * @throws DeepLException
+     */
+    public function translate(string $payload, ?string $from, string $to): string
+    {
+        $sourceLang = null;
+        $targetLang = $this->normalized($to);
+        $options = [
+            TranslateTextOptions::TAG_HANDLING => 'xml',
+        ];
+
+        if (!empty($this->nonSplittingTags)) {
+            $options[TranslateTextOptions::NON_SPLITTING_TAGS] = $this->nonSplittingTags;
+        }
+
+        if (null !== $from) {
+            $sourceLang = $this->normalized($from);
+        }
+
+        $deeplClient = new DeepLClient($this->authKey);
+
+        $result = $deeplClient->translateText($payload, $sourceLang, $targetLang, $options);
+
+        return $result->text;
     }
 
     public function supportsLanguage(string $languageCode): bool
@@ -77,6 +86,9 @@ class Deepl implements ClientInterface
         if (\in_array($languageCode, self::LANGUAGE_CODES)) {
             return $languageCode;
         }
+        if (isset($this->supportedLanguagesMapping[$languageCode])) {
+            return $this->supportedLanguagesMapping[$languageCode];
+        }
 
         $code = strtoupper(substr($languageCode, 0, 2));
         if (\in_array($code, self::LANGUAGE_CODES)) {
@@ -87,7 +99,10 @@ class Deepl implements ClientInterface
     }
 
     /**
-     * List of available code https://www.deepl.com/api.html.
+     * List of available code https://www.deepl.com/docs-api/translate-text
      */
-    private const LANGUAGE_CODES = ['EN', 'DE', 'FR', 'ES', 'IT', 'NL', 'PL', 'JA'];
+    private const LANGUAGE_CODES = ['AR','BG', 'CS','DA', 'DE', 'EL', 'EN','EN-GB','EN-US', 'ES', 'ET',
+        'FI','FR', 'HU', 'ID', 'IT', 'JA', 'KO', 'LT', 'LV', 'NB', 'NL', 'PL', 'PT', 'PT-BR', 'PT-PT', 'RO',
+         'RU', 'SK', 'SL', 'SV', 'TR', 'UK', 'ZH'
+    ];
 }

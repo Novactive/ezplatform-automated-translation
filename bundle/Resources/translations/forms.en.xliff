@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+        <trans-unit id="deab5c91a76488732d0405e72c36702ed2aea3f9" resname="role.policy.auto_translation">
+            <source>Automated Translation</source>
+            <target state="new">Automated Translation</target>
+            <note>key: role.policy.auto_translation</note>
+        </trans-unit>
+        <trans-unit id="deab5c91a76488732d0405e72c36702ed2aea3f2" resname="role.policy.auto_translation.all_functions">
+            <source>Automated Translation/ All functions</source>
+            <target state="new">Automated Translation/ All functions</target>
+            <note>key: role.policy.auto_translation.all_functions</note>
+        </trans-unit>
+        <trans-unit id="deab5c91a76488732d0405e72c36702ed2aea3f3" resname="role.policy.auto_translation.view">
+            <source>Automated Translation/ View</source>
+            <target state="new">Automated Translation/ View</target>
+            <note>key: role.policy.auto_translation.view</note>
+        </trans-unit>
+        <trans-unit id="deab5c91a76488732d0405e72c36702ed2aea3f4" resname="role.policy.auto_translation.create">
+            <source>Automated Translation/ Create</source>
+            <target state="new">Automated Translation/ Create</target>
+            <note>key: role.policy.auto_translation.create</note>
+        </trans-unit>
+        <trans-unit id="deab5c91a76488732d0405e72c36702ed2aea3f5" resname="role.policy.auto_translation.delete">
+            <source>Automated Translation/ Delete</source>
+            <target state="new">Automated Translation/ Delete</target>
+            <note>key: role.policy.auto_translation.delete</note>
+        </trans-unit>
+    </body>
+  </file>
+</xliff>

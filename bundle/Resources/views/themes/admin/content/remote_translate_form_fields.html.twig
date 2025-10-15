@@ -1,3 +1,4 @@
+
 {% if form.vars.autotranslated_data is defined %}
     <div class="ezautomatedtranslation-services-container" data-languages-mapping="{{ form.vars.autotranslated_data|json_encode|e('html_attr') }}">
         {% if form.translatorAlias.vars.choices is defined %}

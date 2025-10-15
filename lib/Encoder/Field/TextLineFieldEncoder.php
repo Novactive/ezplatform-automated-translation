@@ -26,9 +26,14 @@ final class TextLineFieldEncoder implements FieldEncoderInterface
         return TextLineValue::class === $type;
     }
 
-    public function encode(Field $field): string
+    public function encode(Field $field, ?string $from, ?string $to): string
     {
-        return htmlentities((string) $field->value);
+        $value = (string) $field->value;
+        if(FieldEncoderManager::CHINESE_LANGUAGES_CODS){
+          $value= strtolower($value);
+        }
+
+        return htmlentities($value);
     }
 
     public function decode(string $value, $previousFieldValue): Value
@@ -38,7 +43,7 @@ final class TextLineFieldEncoder implements FieldEncoderInterface
             '',
             $value
         );
-        $value = htmlspecialchars_decode(trim($value));
+        $value = html_entity_decode(htmlspecialchars_decode(trim($value)));
 
         if (strlen($value) === 0) {
             throw new EmptyTranslatedFieldException();

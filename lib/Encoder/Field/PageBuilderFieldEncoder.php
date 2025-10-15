@@ -47,7 +47,7 @@ final class PageBuilderFieldEncoder implements FieldEncoderInterface
         return class_exists(Value::class) && Value::class === $type;
     }
 
-    public function encode(Field $field): string
+    public function encode(Field $field, ?string $from, ?string $to): string
     {
         /** @var Value $value */
         $value = $field->value;

@@ -34,7 +34,7 @@ final class RichTextFieldEncoder implements FieldEncoderInterface
         return RichTextValue::class === $type;
     }
 
-    public function encode($field): string
+    public function encode($field, ?string $from, ?string $to): string
     {
         return $this->richTextEncoder->encode((string) $field->value);
     }
