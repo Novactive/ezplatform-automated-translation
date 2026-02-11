@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslationBundle\Form\Extension;
 
-use EzSystems\EzPlatformAdminUi\Form\Type\Language\LanguageCreateType as BaseLanguageCreateType;
+use Ibexa\AdminUi\Form\Type\Language\LanguageCreateType as BaseLanguageCreateType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -2,8 +2,8 @@
 
 ## Requirements
 
-* eZ Platform 3.x
-* PHP 7.1+
+* Ibexa 4.x
+* PHP 8.1+
 
 ## Installation steps
 

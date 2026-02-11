@@ -1,6 +1,6 @@
 services:
     EzSystems\EzPlatformAutomatedTranslationBundle\Controller\TranslationController:
-        decorates: EzSystems\EzPlatformAdminUiBundle\Controller\TranslationController
+        decorates: Ibexa\Bundle\AdminUi\Controller\TranslationController
         autoconfigure: true
         autowire: true
         tags: ['controller.service_arguments']

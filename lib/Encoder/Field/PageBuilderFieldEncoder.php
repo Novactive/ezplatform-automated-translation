@@ -8,12 +8,12 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslation\Encoder\Field;
 
-use eZ\Publish\API\Repository\Values\Content\Field;
-use eZ\Publish\Core\FieldType\Value as APIValue;
+use Ibexa\Contracts\Core\Repository\Values\Content\Field;
+use Ibexa\Core\FieldType\Value as APIValue;
 use EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\BlockAttributeEncoderManager;
 use EzSystems\EzPlatformAutomatedTranslation\Exception\EmptyTranslatedAttributeException;
-use EzSystems\EzPlatformPageFieldType\FieldType\LandingPage\Value;
-use EzSystems\EzPlatformPageFieldType\FieldType\Page\Block\Definition\BlockDefinitionFactory;
+use Ibexa\FieldTypePage\FieldType\LandingPage\Value;
+use Ibexa\FieldTypePage\FieldType\Page\Block\Definition\BlockDefinitionFactory;
 use InvalidArgumentException;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
@@ -26,7 +26,7 @@ final class PageBuilderFieldEncoder implements FieldEncoderInterface
     /** @var \EzSystems\EzPlatformAutomatedTranslation\Encoder\BlockAttribute\BlockAttributeEncoderManager */
     private $blockAttributeEncoderManager;
 
-    /** @var \EzSystems\EzPlatformPageFieldType\FieldType\Page\Block\Definition\BlockDefinitionFactory */
+    /** @var \Ibexa\FieldTypePage\FieldType\Page\Block\Definition\BlockDefinitionFactory */
     private $blockDefinitionFactory;
 
     public function __construct(
@@ -106,17 +106,19 @@ final class PageBuilderFieldEncoder implements FieldEncoderInterface
         $page = clone $previousFieldValue->getPage();
         $decodeArray = $encoder->decode($data, XmlEncoder::FORMAT);
 
-        foreach ($decodeArray as $blockId => $xmlValue) {
-            $block = $page->getBlockById((string) $blockId);
-            $block->setName($xmlValue['name']);
+        if ($decodeArray) {
+            foreach ($decodeArray as $blockId => $xmlValue) {
+                $block = $page->getBlockById((string)$blockId);
+                $block->setName($xmlValue['name']);
 
-            if (is_array($xmlValue['attributes'])) {
-                foreach ($xmlValue['attributes'] as $attributeName => $attribute) {
-                    if (null === ($attributeValue = $this->decodeBlockAttribute($attribute['@type'], $attribute['#']))) {
-                        continue;
+                if (is_array($xmlValue['attributes'])) {
+                    foreach ($xmlValue['attributes'] as $attributeName => $attribute) {
+                        if (null === ($attributeValue = $this->decodeBlockAttribute($attribute['@type'], $attribute['#']))) {
+                            continue;
+                        }
+
+                        $block->getAttribute($attributeName)->setValue($attributeValue);
                     }
-
-                    $block->getAttribute($attributeName)->setValue($attributeValue);
                 }
             }
         }

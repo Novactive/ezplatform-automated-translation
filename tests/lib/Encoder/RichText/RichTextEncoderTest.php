@@ -8,13 +8,13 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslation\Tests\Encoder\RichText;
 
-use eZ\Publish\Core\MVC\ConfigResolverInterface;
+use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
 use EzSystems\EzPlatformAutomatedTranslation\Encoder\RichText\RichTextEncoder;
 use PHPUnit\Framework\TestCase;
 
 class RichTextEncoderTest extends TestCase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject|\eZ\Publish\Core\MVC\ConfigResolverInterface */
+    /** @var \PHPUnit_Framework_MockObject_MockObject|\Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface */
     private $configResolver;
 
     public function setUp()

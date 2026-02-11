@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslationBundle\Event;
 
-use eZ\Publish\Core\FieldType\Value;
+use Ibexa\Core\FieldType\Value;
 
 final class FieldDecodeEvent
 {

@@ -1,10 +1,10 @@
 services:
 
     ezautotranslate.ezadminui.component.javascripts:
-         parent: EzSystems\EzPlatformAdminUi\Component\TwigComponent
+         parent: Ibexa\AdminUi\Component\TwigComponent
          public: false
          arguments:
              $template: '@@EzPlatformAutomatedTranslation/ezadminui/javascripts.html.twig'
          tags:
-             - { name: ezplatform.admin_ui.component, group: 'script-body' }
+             - { name: ibexa.admin_ui.component, group: 'script-body' }
 

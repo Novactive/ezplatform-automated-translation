@@ -1,14 +1,15 @@
 jQuery(function () {
     let $ = jQuery;
     let $form = $("form[name=add-translation]", "#add-translation-modal");
+    let $targetSelect = $(".target-language", $form);
     let $container = $(".ezautomatedtranslation-services-container:first", $form);
     let $error = $(".ezautomatedtranslation-error", $container);
 
-    $form.click(function () {
+    $targetSelect.click(function () {
         $error.addClass("invisible");
     });
 
-    $container.find(".ez-field-edit--ezboolean .ez-data-source__label").click(function () {
+    $container.find(".ez-field-edit--ezboolean .ez-data-source__label").on('click', function () {
         let $input = $(this).find("input[type='checkbox']");
         let isChecked = $input.attr('checked') === 'checked';
         if (isChecked) {
@@ -18,7 +19,6 @@ jQuery(function () {
             $(this).addClass('is-checked');
             $input.attr('checked', 'checked');
         }
-        return false;
     });
 
     $("form[name=add-translation]").submit(function () {
@@ -38,10 +38,7 @@ jQuery(function () {
         let translationAvailable = (typeof sourceLang === 'undefined' || -1 !== $.inArray(sourceLang, mapping[serviceAlias])) && (-1 !== $.inArray(targetLang, mapping[serviceAlias]));
         if (false === translationAvailable) {
             $error.removeClass("invisible");
-            if ($container.find(".ez-field-edit--ezboolean .ez-data-source__label").hasClass('is-checked')) {
-                $container.find(".ez-field-edit--ezboolean .ez-data-source__label").click();
-                return false;
-            }
+            return false;
         }
         return true;
     });

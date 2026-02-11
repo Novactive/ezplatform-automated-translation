@@ -17,6 +17,9 @@ class Deepl implements ClientInterface
     /** @var string */
     private $authKey;
 
+    /** @var string */
+    private $baseUri;
+
     public function getServiceAlias(): string
     {
         return 'deepl';
@@ -33,6 +36,7 @@ class Deepl implements ClientInterface
             throw new ClientNotConfiguredException('authKey is required');
         }
         $this->authKey = $configuration['authKey'];
+        $this->baseUri = isset($configuration['baseUri']) ? $configuration['baseUri'] : 'https://api.deepl.com';
     }
 
     public function translate(string $payload, ?string $from, string $to): string
@@ -52,11 +56,11 @@ class Deepl implements ClientInterface
 
         $http = new Client(
             [
-                'base_uri' => 'https://api.deepl.com',
+                'base_uri' => $this->baseUri,
                 'timeout' => 5.0,
             ]
         );
-        $response = $http->post('/v1/translate', ['form_params' => $parameters]);
+        $response = $http->post('/v2/translate', ['form_params' => $parameters]);
         // May use the native json method from guzzle
         $json = json_decode($response->getBody()->getContents());
 
@@ -68,7 +72,7 @@ class Deepl implements ClientInterface
         return \in_array($this->normalized($languageCode), self::LANGUAGE_CODES);
     }
 
-    private function normalized(string $languageCode): string
+    private function normalized(string $languageCode): string|null
     {
         if (\in_array($languageCode, self::LANGUAGE_CODES)) {
             return $languageCode;
@@ -79,11 +83,11 @@ class Deepl implements ClientInterface
             return $code;
         }
 
-        throw new InvalidLanguageCodeException($languageCode, $this->getServiceAlias());
+        return null;
     }
 
     /**
      * List of available code https://www.deepl.com/api.html.
      */
-    private const LANGUAGE_CODES = ['EN', 'DE', 'FR', 'ES', 'IT', 'NL', 'PL'];
+    private const LANGUAGE_CODES = ['EN', 'DE', 'FR', 'ES', 'IT', 'NL', 'PL', 'JA'];
 }

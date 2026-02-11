@@ -8,10 +8,10 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslation\Encoder\Field;
 
-use eZ\Publish\Core\FieldType\Value;
+use Ibexa\Core\FieldType\Value;
 use EzSystems\EzPlatformAutomatedTranslation\Encoder\RichText\RichTextEncoder;
 use EzSystems\EzPlatformAutomatedTranslation\Exception\EmptyTranslatedFieldException;
-use EzSystems\EzPlatformRichText\eZ\FieldType\RichText\Value as RichTextValue;
+use Ibexa\FieldTypeRichText\FieldType\RichText\Value as RichTextValue;
 
 final class RichTextFieldEncoder implements FieldEncoderInterface
 {

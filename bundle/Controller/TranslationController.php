@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslationBundle\Controller;
 
-use EzSystems\EzPlatformAdminUiBundle\Controller\TranslationController as BaseTranslationController;
-use EzSystems\EzPlatformAdminUiBundle\Controller\Controller;
+use Ibexa\Bundle\AdminUi\Controller\TranslationController as BaseTranslationController;
+use Ibexa\Contracts\AdminUi\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +38,7 @@ final class TranslationController extends Controller
             '\/?',
             urldecode(
                 $this->generateUrl(
-                    'ezplatform.content.translate',
+                    'ibexa.content.translate',
                     [
                         'contentId' => '([0-9]*)',
                         'fromLanguageCode' => '([a-zA-Z-]*)',

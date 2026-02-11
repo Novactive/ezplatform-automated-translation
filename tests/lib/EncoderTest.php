@@ -11,13 +11,13 @@ namespace EzSystems\EzPlatformAutomatedTranslation\Tests;
 use EzSystems\EzPlatformAutomatedTranslation\Encoder;
 use EzSystems\EzPlatformAutomatedTranslation\Encoder\Field\FieldEncoderManager;
 use PHPUnit\Framework\TestCase;
-use eZ\Publish\Core\Repository\Values\Content\Content;
-use eZ\Publish\Core\Repository\Values\Content\VersionInfo;
-use eZ\Publish\API\Repository\Values\Content\Field;
-use eZ\Publish\API\Repository\Values\Content\ContentInfo;
-use eZ\Publish\API\Repository\Values\ContentType\ContentType;
-use eZ\Publish\API\Repository\Values\ContentType\FieldDefinition;
-use eZ\Publish\Core\FieldType\TextLine;
+use Ibexa\Core\Repository\Values\Content\Content;
+use Ibexa\Core\Repository\Values\Content\VersionInfo;
+use Ibexa\Contracts\Core\Repository\Values\Content\Field;
+use Ibexa\Contracts\Core\Repository\Values\Content\ContentInfo;
+use Ibexa\Contracts\Core\Repository\Values\ContentType\ContentType;
+use Ibexa\Contracts\Core\Repository\Values\ContentType\FieldDefinition;
+use Ibexa\Core\FieldType\TextLine;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EncoderTest extends TestCase

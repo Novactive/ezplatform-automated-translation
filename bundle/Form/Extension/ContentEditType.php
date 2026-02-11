@@ -8,11 +8,11 @@ declare(strict_types=1);
 
 namespace EzSystems\EzPlatformAutomatedTranslationBundle\Form\Extension;
 
-use eZ\Publish\API\Repository\ContentTypeService;
-use EzSystems\EzPlatformAdminUi\Form\Data\ContentTranslationData;
+use Ibexa\Contracts\Core\Repository\ContentTypeService;
+use Ibexa\AdminUi\Form\Data\ContentTranslationData;
 use EzSystems\EzPlatformAutomatedTranslation\Translator;
-use EzSystems\EzPlatformContentForms\Data\Content\FieldData;
-use EzSystems\EzPlatformContentForms\Form\Type\Content\ContentEditType as BaseContentEditType;
+use Ibexa\Contracts\ContentForms\Data\Content\FieldData;
+use Ibexa\ContentForms\Form\Type\Content\ContentEditType as BaseContentEditType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;

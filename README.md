@@ -1,4 +1,4 @@
-# eZ Automated Translation Bundle
+# Ibexa 5 Translation Bundle
 
 | Branch   | Travis build status |
 |:--------:|:-------------------:|
